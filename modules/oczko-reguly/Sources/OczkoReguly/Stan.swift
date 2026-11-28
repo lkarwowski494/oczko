@@ -4,6 +4,8 @@
 import Foundation
 
 public let wersjaStanu = 3
+/// Największy krok licznika (`licznik.krok` CHECK 1…2, ADR-0036). Źródło: src/konfiguracja.ts `KROK_MAKS` (dopisuje 08-A) — do czasu dopisania stała ręczna (P-1124).
+public let krokMaks = 2
 
 public struct DzienStanu: Codable, Hashable {
   public let dzien: String
@@ -35,9 +37,11 @@ public struct StanEkranuBlokady: Codable, Hashable { // Hashable: ContentState L
   public let przypomnienia: [PrzypomnienieStanu]
   /// Blokada licznika (F-03, N1, wersja 3); stan wersji 2 bez pola = odblokowany.
   public let zablokowany: Bool
+  /// Krok licznika (ADR-0036, U6): ile rzędów dodaje jedno „+”. Wyjątek nazwany od X-ST-01 (jak `uwaga`): brak klucza = 1 (Live Activity z 1.0.1 żyje do 8 h bez pola).
+  public let krok: Int
 
   enum CodingKeys: String, CodingKey {
-    case wersja, licznikId, nazwa, wartosc, znaczenie, glowa, ostatniPlusMs, dzien, dzienDozwolony, sesjaStartMs, pro, proWaznoscDo, dniWMiesiacu, przypomnienia, zablokowany
+    case wersja, licznikId, nazwa, wartosc, znaczenie, glowa, ostatniPlusMs, dzien, dzienDozwolony, sesjaStartMs, pro, proWaznoscDo, dniWMiesiacu, przypomnienia, zablokowany, krok
   }
 
   /// Pola opcjonalne w typie TS (`T | null`) muszą być obecne: `decodeNil` odróżnia `null` od braku klucza (brak = błąd, X-ST-01).
@@ -66,6 +70,12 @@ public struct StanEkranuBlokady: Codable, Hashable { // Hashable: ContentState L
     przypomnienia = try c.decode([PrzypomnienieStanu].self, forKey: .przypomnienia)
     // Wersja 2 (Live Activity i kontekst zegarka sprzed aktualizacji) nie zna pola: odblokowany; od wersji 3 pole obowiązkowe (X-ST-07).
     zablokowany = wersja >= 3 ? try c.decode(Bool.self, forKey: .zablokowany) : false
+    // `krok`: brak klucza (stan sprzed 1.0.2) = 1; wartość spoza 1…krokMaks = błąd dekodowania, nie zgadnięta liczba (zasada 9 roli).
+    let k = try c.decodeIfPresent(Int.self, forKey: .krok) ?? 1
+    guard (1...krokMaks).contains(k) else {
+      throw DecodingError.dataCorruptedError(forKey: .krok, in: c, debugDescription: "krok \(k) spoza 1…\(krokMaks)")
+    }
+    krok = k
   }
 
   /// Kodowanie z `null` dla pustych pól (ten sam zbiór kluczy co TS, X-ST-02).
@@ -76,22 +86,27 @@ public struct StanEkranuBlokady: Codable, Hashable { // Hashable: ContentState L
     try c.encode(ostatniPlusMs, forKey: .ostatniPlusMs); try c.encode(dzien, forKey: .dzien); try c.encode(dzienDozwolony, forKey: .dzienDozwolony)
     try c.encode(sesjaStartMs, forKey: .sesjaStartMs); try c.encode(pro, forKey: .pro); try c.encode(proWaznoscDo, forKey: .proWaznoscDo)
     try c.encode(dniWMiesiacu, forKey: .dniWMiesiacu); try c.encode(przypomnienia, forKey: .przypomnienia); try c.encode(zablokowany, forKey: .zablokowany)
+    if krok != 1 { try c.encode(krok, forKey: .krok) } // krok 1 = brak klucza (jak w złotych plikach sprzed 1.0.2; dekoder czyta oba)
   }
 
-  /// Stan po zapisanym stuknięciu (ADR-0008 (1)): wartość ± 1, `glowa` = nowe zdarzenie, dzień i dni limitu; `ostatniPlusMs` = czas zdarzenia
-  /// tylko po +1 (wejście przerwy nowego dnia = ostatnie +1, jak TS `ostatniPlus`; P-132 (2c), P-138).
+  /// Stan po zapisanym stuknięciu (ADR-0008 (1)): wartość ± k, `glowa` = ostatnie nowe zdarzenie, dzień i dni limitu; `ostatniPlusMs` = czas zdarzenia
+  /// tylko po +k (wejście przerwy nowego dnia = ostatnie +1, jak TS `ostatniPlus`; P-132 (2c), P-138). −1 jest korektą: nie zmienia `dzien`, `dzienDozwolony`
+  /// ani dni limitu (ADR-0035 § U4, IN-08, IN-09) — dawniej przywracał w stanie limitu przycisk „+1”.
   public func po(_ wartoscZmiana: Int, glowa: String, czasMs: Int64, dzien: String, dni: [DzienStanu]) -> StanEkranuBlokady {
-    StanEkranuBlokady(wersja: wersja, licznikId: licznikId, nazwa: nazwa, wartosc: max(0, wartosc + wartoscZmiana), znaczenie: znaczenie, glowa: glowa,
-                      ostatniPlusMs: wartoscZmiana > 0 ? czasMs : ostatniPlusMs, dzien: dzien, dzienDozwolony: true, sesjaStartMs: sesjaStartMs, pro: pro, proWaznoscDo: proWaznoscDo,
-                      dniWMiesiacu: dni, przypomnienia: przypomnienia, zablokowany: zablokowany)
+    let plus = wartoscZmiana > 0
+    return StanEkranuBlokady(wersja: wersja, licznikId: licznikId, nazwa: nazwa, wartosc: max(0, wartosc + wartoscZmiana), znaczenie: znaczenie, glowa: glowa,
+                             ostatniPlusMs: plus ? czasMs : ostatniPlusMs, dzien: plus ? dzien : self.dzien, dzienDozwolony: plus ? true : dzienDozwolony,
+                             sesjaStartMs: sesjaStartMs, pro: pro, proWaznoscDo: proWaznoscDo, dniWMiesiacu: plus ? dni : dniWMiesiacu,
+                             przypomnienia: przypomnienia, zablokowany: zablokowany, krok: krok)
   }
 
   public init(wersja: Int, licznikId: String, nazwa: String, wartosc: Int, znaczenie: Znaczenie, glowa: String?, ostatniPlusMs: Int64?, dzien: String,
               dzienDozwolony: Bool, sesjaStartMs: Int64?, pro: Bool, proWaznoscDo: Int64?, dniWMiesiacu: [DzienStanu], przypomnienia: [PrzypomnienieStanu],
-              zablokowany: Bool) {
+              zablokowany: Bool, krok: Int = 1) {
     self.wersja = wersja; self.licznikId = licznikId; self.nazwa = nazwa; self.wartosc = wartosc; self.znaczenie = znaczenie; self.glowa = glowa
     self.ostatniPlusMs = ostatniPlusMs; self.dzien = dzien; self.dzienDozwolony = dzienDozwolony; self.sesjaStartMs = sesjaStartMs; self.pro = pro
     self.proWaznoscDo = proWaznoscDo; self.dniWMiesiacu = dniWMiesiacu; self.przypomnienia = przypomnienia; self.zablokowany = zablokowany
+    self.krok = krok // bez sprawdzenia zakresu: zakres sprawdza dekoder (granica) i `stuknij` (reguła)
   }
 
   public static func dekoduj(_ dane: Data) throws -> StanEkranuBlokady { try JSONDecoder().decode(StanEkranuBlokady.self, from: dane) }

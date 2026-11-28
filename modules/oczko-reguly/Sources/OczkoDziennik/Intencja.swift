@@ -8,7 +8,7 @@ import OczkoReguly
 
 public enum WynikIntencji: Equatable {
   /// Linia do dopisania i stan do pokazania po udanym `fsync` (ADR-0008 (8A)).
-  case zapisz(ZdarzenieWejsciowe, StanEkranuBlokady)
+  case zapisz([ZdarzenieWejsciowe], StanEkranuBlokady)
   /// Nowy dzień ponad limit (P-065 (1a)): bez linii, Live Activity pokazuje komunikat limitu.
   case limit
   /// −1 przy wartości 0: bez linii (licznik nie schodzi poniżej zera, CHECK `wartosc >= 0`).
@@ -21,7 +21,17 @@ public enum WynikIntencji: Equatable {
 /// `zrodlo`: ekran blokady (intencja) albo zegarek (ta sama reguła na stanie z kontekstu telefonu, ADR-0009).
 public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady, teraz: Int64, strefa: String, id: String, urzadzenie: String,
                     zrodlo: ZdarzenieWejsciowe.Zrodlo = .ekran_blokady, proZegarkaSklep: [Uprawnienie] = []) throws -> WynikIntencji {
+  try stuknij(rodzaj, stan: stan, teraz: teraz, strefa: strefa, ids: [id], urzadzenie: urzadzenie, zrodlo: zrodlo, proZegarkaSklep: proZegarkaSklep)
+}
+
+/// Wersja z `ids`: jedno stuknięcie „+k” zapisuje k linii (k = `stan.krok`), więc wołający podaje k nowych identyfikatorów (ADR-0036 pkt 2).
+public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady, teraz: Int64, strefa: String, ids: [String], urzadzenie: String,
+                    zrodlo: ZdarzenieWejsciowe.Zrodlo = .ekran_blokady, proZegarkaSklep: [Uprawnienie] = []) throws -> WynikIntencji {
   if stan.zablokowany { return .zablokowany } // F-03, N1: przed limitem i przed −1 (ADR-0008, 2026-10-26); bez linii
+  // ADR-0036 pkt 2: „+k” składa k linii; −1 zostaje −1 przy każdym kroku (IN-04). Krok ze stanu spoza 1…krokMaks = błąd danych (IN-10), nie zgadnięta liczba.
+  guard (1...krokMaks).contains(stan.krok) else { throw BladDanych("stuknij: krok \(stan.krok) spoza 1…\(krokMaks)") }
+  let k = rodzaj == .plus ? stan.krok : 1
+  guard ids.count >= k else { throw BladDanych("stuknij: potrzeba \(k) identyfikatorów, jest \(ids.count)") }
   let dzis = try dzienLokalny(ms: teraz, strefa: strefa)
   // KP-17: Pro, gdy potwierdza je stan od telefonu albo StoreKit zegarka (OR, proZegarka).
   let pro = proZegarka([.telefon(pro: stan.pro, wygasa: stan.proWaznoscDo)] + (proZegarkaSklep.isEmpty ? [] : [.zegarek(proZegarkaSklep)]), teraz: teraz)
@@ -32,14 +42,20 @@ public func stuknij(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, stan: StanEkranuBlokady
   } else if try wolaStraznika(rodzaj: rodzaj.rawValue) {
     // Aplikacja policzyła dzisiejszy dzień niedozwolony (zna dni z innych urządzeń) — intencja jej nie podważa; po zmianie daty liczy sama (ADR-0008 (6)).
     if dzis == stan.dzien && !stan.dzienDozwolony { return .limit }
+    // Jedna decyzja limitu na stuknięcie, przed pierwszą linią: „+2” albo zapisuje obie linie, albo żadnej (IN-02, IN-03).
     let start = try startDnia(WejscieDnia(dni: dni, dzis: dzis, teraz: teraz, ostatniPlus: stan.ostatniPlusMs, pro: pro))
     if !start.dozwolone { return .limit }
     if let z = start.zapis { dni.append(z) }
   }
-  let zdarzenie = ZdarzenieWejsciowe(id: id, licznikId: stan.licznikId, rodzaj: rodzaj, rodzice: stan.glowa.map { [$0] } ?? [], czasMs: teraz,
-                                     strefa: strefa, dzien: dzis, zrodlo: zrodlo, urzadzenie: urzadzenie, pro: pro)
-  let nowy = stan.po(zdarzenie, dni: dni.map { DzienStanu(dzien: $0.data, pro: $0.pro) })
-  return .zapisz(zdarzenie, nowy)
+  var linie: [ZdarzenieWejsciowe] = []
+  var rodzic = stan.glowa
+  for id in ids.prefix(k) { // łańcuch rodziców, jeden czas (ADR-0036: grupowanie „stuknięcia” po czasie, źródle, urządzeniu i rodzicu)
+    linie.append(ZdarzenieWejsciowe(id: id, licznikId: stan.licznikId, rodzaj: rodzaj, rodzice: rodzic.map { [$0] } ?? [], czasMs: teraz,
+                                    strefa: strefa, dzien: dzis, zrodlo: zrodlo, urzadzenie: urzadzenie, pro: pro))
+    rodzic = id
+  }
+  let nowy = stan.po(rodzaj == .plus ? k : -1, glowa: ids[k - 1], czasMs: teraz, dzien: dzis, dni: dni.map { DzienStanu(dzien: $0.data, pro: $0.pro) })
+  return .zapisz(linie, nowy)
 }
 
 extension StanEkranuBlokady {

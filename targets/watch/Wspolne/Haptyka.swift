@@ -1,8 +1,8 @@
 // Wzorzec haptyki po stuknięciu na zegarku (07-jakosc-005, F-12; ADR-0030 pkt 4, kryterium K-05g; tokeny: docs/design/tokeny.json „haptykaZegarek”).
 // Decyzja „jaki wzorzec” to czysta funkcja bez WatchKit; adapter (targets/watch/Aplikacja.swift) tylko mapuje wynik na WKHapticType:
 // plus → .click · przypomnienie → .notification · bladZapisu → .retry · blokadaStukniecie → .failure.
-// Wejście na rząd z przypomnieniem = ta sama reguła co pas przypomnienia (`pasPrzypomnienia`, RD-13 W11–W19): rząd w robocie po stuknięciu
-// ma przypomnienie, a stuknięcie jest +1 (sygnał tylko przy wzroście skończonych, RD-13 W20–W25; −1 to spadek — bez sygnału).
+// Wejście na rząd z przypomnieniem = reguła sygnału RD-13 W20–W25 (`przypomnienieSkoku`: rząd planu w (przed + 1, po + 1], sygnał tylko przy wzroście
+// skończonych; −1 to spadek — bez sygnału). Przy „+1” to rząd w robocie po stuknięciu (jak pas `pasPrzypomnienia`), przy „+2” także rząd przeskoczony.
 import Foundation
 #if canImport(OczkoReguly)
 import OczkoReguly
@@ -27,8 +27,14 @@ public func wzorzecHaptykiZegarka(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, _ przebie
     switch w {
     case .zablokowany: return .blokadaStukniecie
     case .limit, .bezZmiany: return nil
-    case let .zapisz(_, nowy):
-      if rodzaj == .plus, pasPrzypomnienia(nowy) != nil { return .przypomnienie }
+    case let .zapisz(linie, nowy):
+      // „+1”: ta sama reguła co pas przypomnienia po stuknięciu (RD-13 W11–W19). PS (ADR-0036 pkt 5): „+2” dodatkowo daje sygnał, gdy przeskoczyło rząd
+      // z przypomnieniem (przed → po skończonych); sam pas po stuknięciu gubiłby rząd przeskoczony. Dla jednej linii obie reguły są równoważne.
+      let przed = nowy.wartosc - linie.count
+      let przypomnienie = linie.count == 1
+        ? pasPrzypomnienia(nowy) != nil
+        : nowy.przypomnienia.contains { przypomnienieSkoku(przed: przed, po: nowy.wartosc, plan: $0) != nil }
+      if rodzaj == .plus, przypomnienie { return .przypomnienie }
       return .plus
     }
   }

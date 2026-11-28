@@ -36,3 +36,15 @@ public func pasPrzypomnienia(_ s: StanEkranuBlokady) -> PasPrzypomnienia? {
   guard let (p, c) = z.first, let rzad = c.rzadPasa, let k = c.k else { return nil }
   return PasPrzypomnienia(rzad: rzad, tekst: p.tekst, k: k, razy: p.razy, wiecej: z.count - 1)
 }
+
+/// PS-01…PS-07 (ADR-0036 pkt 5, RD-13 W20–W25): rząd przypomnienia, który „przeskoczyło” stuknięcie ze skończonych `przed` na `po` (rząd w robocie
+/// = skończone + 1), albo nil. Ta sama reguła co `przypomnienieWpisania(przed + 1, po + 1)` w src/domena/przypomnienia.ts.
+public func przypomnienieSkoku(przed: Int, po: Int, plan: PrzypomnienieStanu) -> Int? {
+  guard plan.co >= 1, plan.razy >= 1, po > przed else { return nil } // RD-13-W5; spadek albo bez zmiany: bez przypomnienia
+  let a = przed + 1, b = po + 1
+  let ostatni = plan.od + (plan.razy - 1) * plan.co // RD-13 „Granica”
+  let gorny = min(b, ostatni)
+  guard gorny >= plan.od else { return nil }
+  let rzad = gorny - ((gorny - plan.od) % plan.co) // największy rząd planu ≤ gorny
+  return rzad > a ? rzad : nil
+}

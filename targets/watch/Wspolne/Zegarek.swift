@@ -10,6 +10,8 @@ import OczkoReguly
 public protocol MagazynSkrzynki: AnyObject {
   func odczytaj() throws -> [String]
   func dopisz(_ linia: String) throws
+  /// ADR-0036 pkt 3: wszystkie linie stuknięcia „+k” jednym zapisem (wszystko albo nic).
+  func dopisz(wiele linie: [String]) throws
   func zastap(_ linie: [String]) throws
 }
 
@@ -26,7 +28,19 @@ public final class PlikSkrzynki: MagazynSkrzynki {
     guard let z = ZdarzenieWejsciowe.zLinii(Substring(linia)) else { throw BladDanych("skrzynka zegarka: linia nie jest zdarzeniem") }
     try dziennik.dopisz(z)
   }
+  public func dopisz(wiele linie: [String]) throws {
+    let zdarzenia = try linie.map { l -> ZdarzenieWejsciowe in
+      guard let z = ZdarzenieWejsciowe.zLinii(Substring(l)) else { throw BladDanych("skrzynka zegarka: linia nie jest zdarzeniem") }
+      return z
+    }
+    try dziennik.dopisz(zdarzenia)
+  }
   public func zastap(_ linie: [String]) throws { try dziennik.zastap(linie) }
+}
+
+extension MagazynSkrzynki {
+  /// Domyślnie po jednej (atrapy bez zapisu zbiorczego); `PlikSkrzynki` zapisuje jednym `write`.
+  public func dopisz(wiele linie: [String]) throws { for l in linie { try dopisz(l) } }
 }
 
 public struct SkrzynkaZegarka: Equatable {
@@ -79,11 +93,16 @@ public struct SkrzynkaZegarka: Equatable {
   /// Stuknięcie na zegarku (pkt 2): reguły z pakietu (blokada, limit) na stanie pokazywanym → `dopisz` z `fsync` → dopiero potem kolejka
   /// i stan pokazywany. Błąd zapisu rzuca (stan i kolejka bez zmian; wołający: komunikat „nie zapisano”, bez haptyki potwierdzenia).
   public mutating func stuknijNaZegarku(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, teraz: Int64, strefa: String, id: String, urzadzenie: String, sklep: [Uprawnienie] = []) throws -> WynikIntencji {
+    try stuknijNaZegarku(rodzaj, teraz: teraz, strefa: strefa, ids: [id], urzadzenie: urzadzenie, sklep: sklep)
+  }
+
+  /// Wersja z `ids`: „+k” zapisuje k linii jednym zapisem do skrzynki (ADR-0036 pkt 3–4); wołający podaje k identyfikatorów (`stan.krok` ze stanu pokazywanego).
+  public mutating func stuknijNaZegarku(_ rodzaj: ZdarzenieWejsciowe.Rodzaj, teraz: Int64, strefa: String, ids: [String], urzadzenie: String, sklep: [Uprawnienie] = []) throws -> WynikIntencji {
     guard let s = pokazywany else { return .bezZmiany } // przed pierwszym kontaktem z telefonem zegarek nie zna licznika
-    let w = try stuknij(rodzaj, stan: s, teraz: teraz, strefa: strefa, id: id, urzadzenie: urzadzenie, zrodlo: .zegarek, proZegarkaSklep: sklep)
-    if case let .zapisz(z, nowy) = w {
-      try magazyn.dopisz(z.linia)
-      oczekujace.append(z)
+    let w = try stuknij(rodzaj, stan: s, teraz: teraz, strefa: strefa, ids: ids, urzadzenie: urzadzenie, zrodlo: .zegarek, proZegarkaSklep: sklep)
+    if case let .zapisz(linie, nowy) = w {
+      try magazyn.dopisz(wiele: linie.map(\.linia))
+      oczekujace.append(contentsOf: linie)
       pokazywany = nowy
     }
     return w

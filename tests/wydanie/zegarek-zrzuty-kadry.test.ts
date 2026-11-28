@@ -45,7 +45,9 @@ describe('zegarek-kadry.mjs: stałe z wymagań Apple', () => {
 
 describe('zegarek-kadry.mjs: stan zegarka = to, co dekoduje aplikacja', () => {
   const swift = fs.readFileSync(path.join(korzen, 'targets/watch/Wspolne/Stan.swift'), 'utf8');
-  const kluczeSwift = (swift.match(/enum CodingKeys: String, CodingKey \{\s*case ([^\n]+)/) ?? [])[1]?.split(',').map((k) => k.trim()).sort() ?? [];
+  // FB1 (P-1124): `krok` (ADR-0036) jest jedynym kluczem OPCJONALNYM stanu (brak = 1, stan sprzed 1.0.2): jego brak nie daje ekranu „Otwórz Oczko na iPhonie”, więc kadry stanu go nie mają.
+  const OPCJONALNE_KLUCZE = ['krok'];
+  const kluczeSwift = ((swift.match(/enum CodingKeys: String, CodingKey \{\s*case ([^\n]+)/) ?? [])[1]?.split(',').map((k) => k.trim()).sort() ?? []).filter((k) => !OPCJONALNE_KLUCZE.includes(k));
 
   test('zbiór kluczy stanu = CodingKeys z targets/watch/Wspolne/Stan.swift (brak klucza = ekran „Otwórz Oczko na iPhonie”)', () => {
     expect(kluczeSwift.length).toBe(15);

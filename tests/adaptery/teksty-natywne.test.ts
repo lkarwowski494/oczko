@@ -117,7 +117,17 @@ test('P-143: klucze `aktywnosc` = tabela „Ekran blokady i zegarek” w design-
   const zSpec = [...sekcja.matchAll(/^\| `aktywnosc\.([a-z_0-9]+)`(?: \/ `aktywnosc\.([a-z_0-9]+)`| \/ `_([a-z]+)`)? \|/gm)]
     .flatMap((m) => [m[1], m[2], m[3] ? `${(m[1] ?? '').replace(/_[a-z]+$/, '')}_${m[3]}` : undefined]).filter((k): k is string => !!k);
   // `aktywnosc.sesja_a11y` jest w opisie wiersza karta_a11y („dopisek `aktywnosc.sesja_a11y` „session {{czas}}””), nie w osobnym wierszu.
-  expect([...new Set([...zSpec, 'sesja_a11y'])].sort()).toEqual(KLUCZE);
+  // FB1 08-B (P-1126): klucze 1.0.2 (U6) są w tabeli „Klucze i18n” projektu 1.0.2 (docs/design/1-0-2.md), a nie w zarchiwizowanym design-spec; zmiana testu: źródłem
+  // jest archiwalna tabela + tabela 1.0.2, oba kierunki sprawdzane jak dotąd (klucz specyfikacji bez klucza w słowniku i odwrotnie).
+  const spec102 = readFileSync(join(KORZEN, 'docs/design/1-0-2.md'), 'utf8');
+  const zSpec102 = [...spec102.matchAll(/^\| `aktywnosc\.([a-z_0-9]+)` \|/gm)].map((m) => m[1] ?? '');
+  const zArchiwum = new Set([...zSpec, 'sesja_a11y']);
+  expect([...zArchiwum].filter((k) => !KLUCZE.includes(k)).sort()).toEqual([]);
+  expect(KLUCZE.filter((k) => !zArchiwum.has(k) && !zSpec102.includes(k))).toEqual([]);
+  // FB2 (recenzja FB1, P2): kierunek „klucz specyfikacji 1.0.2 musi być w słowniku”. Wyjątek tylko `podpowiedz_*` (U7 B odłożone do 1.0.3, prototyp B = NIE).
+  expect(['plus2', 'teraz_dwa', 'stuknij_dwa'].filter((k) => !zSpec102.includes(k))).toEqual([]);
+  expect(zSpec102.filter((k) => !k.startsWith('podpowiedz_') && !KLUCZE.includes(k)).sort()).toEqual([]);
+  expect(['plus2', 'teraz_dwa', 'stuknij_dwa'].filter((k) => !KLUCZE.includes(k))).toEqual([]);
   expect(Object.values(en.aktywnosc).filter((t) => /[\u0000-\u001f]/.test(t))).toEqual([]);
 });
 test('ADR-0017: kategorie z tabeli Swift = kategoriaLiczby dla 35 języków, n = 0…10 000 i pełne miliony do 10⁹', () => {

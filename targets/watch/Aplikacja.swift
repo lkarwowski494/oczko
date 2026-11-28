@@ -68,7 +68,9 @@ final class ModelZegarka: NSObject, ObservableObject, WCSessionDelegate {
     let teraz = Int64((Date().timeIntervalSince1970 * 1000).rounded(.down))
     let w: WynikIntencji
     do {
-      w = try skrzynka.stuknijNaZegarku(rodzaj, teraz: teraz, strefa: TimeZone.current.identifier, id: UUID().uuidString.lowercased(), urzadzenie: urzadzenie, sklep: sklep)
+      // „+k”: k identyfikatorów, bo jedno stuknięcie to k linii (ADR-0036 pkt 2); −1 użyje pierwszego.
+      let ids = (0..<max(1, skrzynka.pokazywany?.krok ?? 1)).map { _ in UUID().uuidString.lowercased() }
+      w = try skrzynka.stuknijNaZegarku(rodzaj, teraz: teraz, strefa: TimeZone.current.identifier, ids: ids, urzadzenie: urzadzenie, sklep: sklep)
     } catch {
       // Zapis do skrzynki nieudany (pełna pamięć, błąd we/wy): stan bez zmian, haptyka „ponów” zamiast potwierdzenia (P-142 (1b)).
       niezapisano = rodzaj
@@ -239,7 +241,8 @@ struct EkranZegarka: View {
             Text(Teksty.t("blad_zapisu_zegarek", j)).font(.footnote).foregroundStyle(Color("tekst2")).multilineTextAlignment(.center)
           } else {
             if let pas = pasPrzypomnienia(s) { PasZegarka(pas: pas, jezyk: j) }
-            Text(Teksty.t("teraz", j, ["n": String(rzadWRobocie(s))])).font(.footnote).foregroundStyle(Color("tekst2"))
+            Text(s.krok > 1 ? Teksty.t("teraz_dwa", j, ["od": String(rzadWRobocie(s)), "do": String(rzadWRobocie(s) + s.krok - 1)]) : Teksty.t("teraz", j, ["n": String(rzadWRobocie(s))]))
+              .font(.footnote).foregroundStyle(Color("tekst2"))
             // P-199 Q6a: linia, gdy najstarsza pozycja kolejki czeka ≥ ZEGAREK_PONOWIENIE_MS (nie z zasięgu WCSession — migotałaby);
             // odświeżanie co minutę, bo próg mija bez zdarzenia.
             TimelineView(.periodic(from: .now, by: 60)) { kontekst in
@@ -250,8 +253,10 @@ struct EkranZegarka: View {
           }
           HStack(spacing: 8) {
             Button { model.stuknij(.minus) } label: { Image(systemName: "minus") }.accessibilityLabel(Teksty.t("minus_a11y", j))
-            Button { model.stuknij(.plus) } label: { Text(Teksty.t("plus", j)).lineLimit(1) }
-              .accessibilityLabel(Teksty.t("plus_a11y", j, ["n": String(rzadWRobocie(s))])).tint(Color("przycisk"))
+            Button { model.stuknij(.plus) } label: { Text(s.krok > 1 ? Teksty.t("plus2", j) : Teksty.t("plus", j)).lineLimit(1) }
+              .accessibilityLabel(s.krok > 1
+                ? Teksty.t("plus2", j) + ". " + Teksty.t("teraz_dwa", j, ["od": String(rzadWRobocie(s)), "do": String(rzadWRobocie(s) + s.krok - 1)])
+                : Teksty.t("plus_a11y", j, ["n": String(rzadWRobocie(s))])).tint(Color("przycisk"))
           }
         }
       }

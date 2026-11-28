@@ -25,8 +25,8 @@ final class IntencjaTests: XCTestCase {
     let glowa = try XCTUnwrap(s.glowa)
     var rodzice: [[String]] = []
     for (i, id) in ["a1", "a2", "a3"].enumerated() {
-      guard case let .zapisz(z, nowy) = try stuknij(.plus, stan: s, teraz: waw(10, 20, i), strefa: "Europe/Warsaw", id: id, urzadzenie: "u") else { return XCTFail("bez zapisu") }
-      rodzice.append(z.rodzice)
+      guard case let .zapisz(linie, nowy) = try stuknij(.plus, stan: s, teraz: waw(10, 20, i), strefa: "Europe/Warsaw", id: id, urzadzenie: "u") else { return XCTFail("bez zapisu") }
+      rodzice.append(linie[0].rodzice)
       XCTAssertEqual([nowy.glowa, String(nowy.wartosc)], [id, String(s.wartosc + 1)])
       s = nowy
     }
@@ -37,8 +37,8 @@ final class IntencjaTests: XCTestCase {
   func testPolnocIPrzerwa() throws {
     let s0 = try stan("stan-ekranu-blokady-typowy.json") // 2026-11-10, 3 dni w miesiącu
     guard case let .zapisz(_, wieczor) = try stuknij(.plus, stan: s0, teraz: waw(10, 23, 50), strefa: "Europe/Warsaw", id: "w", urzadzenie: "u") else { return XCTFail() }
-    guard case let .zapisz(z1, poPolnocy) = try stuknij(.plus, stan: wieczor, teraz: waw(11, 0, 20), strefa: "Europe/Warsaw", id: "p", urzadzenie: "u") else { return XCTFail() }
-    XCTAssertEqual(z1.dzien, "2026-11-11")
+    guard case let .zapisz(l1, poPolnocy) = try stuknij(.plus, stan: wieczor, teraz: waw(11, 0, 20), strefa: "Europe/Warsaw", id: "p", urzadzenie: "u") else { return XCTFail() }
+    XCTAssertEqual(l1[0].dzien, "2026-11-11")
     XCTAssertFalse(poPolnocy.dniWMiesiacu.contains { $0.dzien == "2026-11-11" }, "praca w toku po północy nie zaczyna dnia (L-04)")
     guard case let .zapisz(_, rano) = try stuknij(.plus, stan: poPolnocy, teraz: waw(11, 9), strefa: "Europe/Warsaw", id: "r", urzadzenie: "u") else { return XCTFail() }
     XCTAssertTrue(rano.dniWMiesiacu.contains(DzienStanu(dzien: "2026-11-11", pro: false)))
@@ -55,8 +55,8 @@ final class IntencjaTests: XCTestCase {
     let limit = try stan("stan-ekranu-blokady-limit.json")
     XCTAssertEqual(try stuknij(.minus, stan: limit, teraz: waw(7, 9), strefa: "Europe/Warsaw", id: "m", urzadzenie: "u"), .bezZmiany)
     let pro = try stan("stan-zegarka-pro-dozywotni.json")
-    guard case let .zapisz(z, _) = try stuknij(.minus, stan: pro, teraz: waw(10, 21), strefa: "Europe/Warsaw", id: "m2", urzadzenie: "u") else { return XCTFail() }
-    XCTAssertEqual([z.rodzaj.rawValue, String(z.pro), z.zrodlo.rawValue], ["minus", "true", "ekran_blokady"])
+    guard case let .zapisz(linie, _) = try stuknij(.minus, stan: pro, teraz: waw(10, 21), strefa: "Europe/Warsaw", id: "m2", urzadzenie: "u") else { return XCTFail() }
+    XCTAssertEqual([linie[0].rodzaj.rawValue, String(linie[0].pro), linie[0].zrodlo.rawValue], ["minus", "true", "ekran_blokady"])
   }
 
   /// Stan z podmienioną blokadą (pole `zablokowany`, stan v3).

@@ -104,13 +104,18 @@ public final class DziennikPlus {
 
   /// (8A): `\n` + linia + `\n`, gdy plik niepusty nie kończy się `\n`, inaczej linia + `\n`; jeden `write`, potem `fsync`.
   /// Krótki zapis albo błąd: `ftruncate` do rozmiaru sprzed zapisu i błąd (wołający nie zmienia stanu Live Activity).
-  public func dopisz(_ z: ZdarzenieWejsciowe) throws {
+  public func dopisz(_ z: ZdarzenieWejsciowe) throws { try dopisz([z]) }
+
+  /// ADR-0036 pkt 3: stuknięcie „+k” to k linii zapisanych jednym `write` (każda zakończona `\n`) i jednym `fsync`. Krótki zapis albo błąd:
+  /// `ftruncate` do rozmiaru sprzed zapisu, czyli żadna linia stuknięcia nie zostaje (wszystko albo nic). Pusta lista nic nie zapisuje.
+  public func dopisz(_ linie: [ZdarzenieWejsciowe]) throws {
+    guard !linie.isEmpty else { return }
     try kolejka.sync {
       let u = try otworz(sciezka)
       defer { u.zamknij() }
       let przed = try u.rozmiar()
       let poczatek: [UInt8] = try przed > 0 && u.bajt(na: przed - 1) != 0x0A ? [0x0A] : []
-      let bajty = poczatek + Array(z.linia.utf8) + [0x0A]
+      let bajty = poczatek + linie.flatMap { Array($0.linia.utf8) + [0x0A] }
       do {
         let n = try u.dopisz(bajty)
         if n != bajty.count { throw BladDziennika.krotkiZapis(zapisano: n, oczekiwano: bajty.count) }

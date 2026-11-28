@@ -20,8 +20,8 @@ final class ZegarekTests: XCTestCase {
     let k = try stan("stan-zegarka-typowy.json")
     s.przyjmij(k)
     for (i, id) in ["z1", "z2", "z3"].enumerated() {
-      guard case let .zapisz(z, _) = try s.stuknijNaZegarku(.plus, teraz: wieczor + Int64(i) * 60_000, strefa: "Europe/Warsaw", id: id, urzadzenie: "zegarek") else { return XCTFail() }
-      XCTAssertEqual(z.zrodlo, .zegarek)
+      guard case let .zapisz(linie, _) = try s.stuknijNaZegarku(.plus, teraz: wieczor + Int64(i) * 60_000, strefa: "Europe/Warsaw", id: id, urzadzenie: "zegarek") else { return XCTFail() }
+      XCTAssertEqual(linie[0].zrodlo, .zegarek)
     }
     XCTAssertEqual(s.pokazywany?.wartosc, k.wartosc + 3)
     XCTAssertEqual(s.oczekujace.map(\.rodzice), [[k.glowa!], ["z1"], ["z2"]])
@@ -40,8 +40,8 @@ final class ZegarekTests: XCTestCase {
     let rano: Int64 = 1794124800000 // 2026-11-08 09:00 Europe/Warsaw (nowy dzień)
     XCTAssertEqual(try s.stuknijNaZegarku(.plus, teraz: rano, strefa: "Europe/Warsaw", id: "x", urzadzenie: "zegarek"), .limit)
     let dozywotni = [Uprawnienie(produkt: "oczko.pro.lifetime", wygasa: nil, odebrane: false)]
-    guard case let .zapisz(z, nowy) = try s.stuknijNaZegarku(.plus, teraz: rano, strefa: "Europe/Warsaw", id: "y", urzadzenie: "zegarek", sklep: dozywotni) else { return XCTFail("Pro ze sklepu zegarka nie zdjęło limitu") }
-    XCTAssertEqual([String(z.pro), z.dzien], ["true", "2026-11-08"])
+    guard case let .zapisz(linie, nowy) = try s.stuknijNaZegarku(.plus, teraz: rano, strefa: "Europe/Warsaw", id: "y", urzadzenie: "zegarek", sklep: dozywotni) else { return XCTFail("Pro ze sklepu zegarka nie zdjęło limitu") }
+    XCTAssertEqual([String(linie[0].pro), linie[0].dzien], ["true", "2026-11-08"])
     XCTAssertTrue(nowy.dniWMiesiacu.contains(DzienStanu(dzien: "2026-11-08", pro: true)))
   }
 

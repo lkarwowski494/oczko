@@ -1,0 +1,6 @@
+FB2 verify (2026-11-28, HEAD 8385a71 + ten plik)
+npm run verify: kod 0 — typecheck, typecheck:testy, lint, jakosc:kontrole, npm test (Test Suites: 752 passed, Tests: 8454 passed)
+swift test (modules/oczko-reguly, Swift 6.0.3 Linux): 69 tests, 0 failures (przed FB2: 62; +7 KoniecProcesuTests)
+node scripts/natywne/kontrola-swift.mjs: 0 błędów
+swiftc -parse: modules/oczko-dziennik-plus/ios/OczkoDziennikPlusModule.swift + Wspolne/KoniecProcesu.swift: OK; typy iOS (ExpoModulesCore, ActivityKit, UIKit) tylko w CI
+kod 0

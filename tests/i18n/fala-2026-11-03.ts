@@ -47,6 +47,9 @@ export const jestFormaKlucza = (k: string): boolean => FORMA.test(k);
  * zostaje); klucz spoza tej listy w `oczekujace.json` jest błędem. Po fali 09 lista jest pusta i testy wracają do stanu „po fali” bez zmian.
  */
 export const OCZEKUJACE_DO_FALI_1_0_2: string[] = [
+  'aktywnosc.plus2',
+  'aktywnosc.stuknij_dwa',
+  'aktywnosc.teraz_dwa',
   'dane.konflikt_a11y_zrodlo',
   'dane.konflikt_z_aplikacji',
   'dane.konflikt_z_ekranu_blokady',

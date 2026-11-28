@@ -1,5 +1,5 @@
 {
-  "powod": "FA2 (08 build, 2026-11-28, KO-239, P-1133): klucze 1.0.2 części TypeScript (menu ustawień licznika, krok +2, podpowiedź +1, zdjęcie z ekranu blokady, kod oferty, podpowiedzi formularzy, etykiety źródła konfliktu) tylko w en i pl; pozostałe 33 języki: fala 09. Wcześniej: Fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
+  "powod": "FA1/FA2 + FB1/FB2 (08, 2026-11-28, KO-239, P-1126, P-1133): klucze 1.0.2 (aktywnosc.plus2, aktywnosc.teraz_dwa, aktywnosc.stuknij_dwa — ekran blokady i zegarek „+2” — oraz części TypeScript: menu ustawień licznika, krok +2, podpowiedź +1, zdjęcie z ekranu blokady, kod oferty, podpowiedzi formularzy, etykiety źródła konfliktu) tylko w en i pl; pozostałe 33 języki: fala 09. Wcześniej: Fala 09 build 4 (2026-11-10, KO-027, P-692, P-700): 61 kluczy przewodnik.* (przewodnik po funkcjach) przetłumaczonych w 33 językach (en i pl wcześniej); lista pusta. Wcześniej: fala 09 build 3 (2026-11-10, KO-020, P-668, P-673): 6 kluczy ekranu licencji (M1-245); fala 09 E5 (2026-11-09, P-618 b, P-620). Historia powodów: git log tego pliku.",
   "odwolania": [
     "P-320",
     "P-357",
@@ -25,9 +25,13 @@
     "P-668",
     "P-692",
     "P-700",
+    "P-1126",
     "P-1133"
   ],
   "klucze": [
+    "aktywnosc.plus2",
+    "aktywnosc.stuknij_dwa",
+    "aktywnosc.teraz_dwa",
     "dane.konflikt_a11y_zrodlo",
     "dane.konflikt_z_aplikacji",
     "dane.konflikt_z_ekranu_blokady",
@@ -56,6 +60,15 @@
   ],
   "pierwsze_w_fali": [],
   "przetlumaczone_czesciowo": {
+    "aktywnosc.plus2": [
+      "pl"
+    ],
+    "aktywnosc.stuknij_dwa": [
+      "pl"
+    ],
+    "aktywnosc.teraz_dwa": [
+      "pl"
+    ],
     "dane.konflikt_a11y_zrodlo": [
       "pl"
     ],

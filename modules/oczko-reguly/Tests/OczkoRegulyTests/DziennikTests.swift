@@ -82,7 +82,10 @@ final class DziennikTests: XCTestCase {
       let id = v["id"]?.tekst ?? "?"
       w.dodaj(id)
       let p = plik("\(id).jsonl", tresc: try XCTUnwrap(v["przed"]?.tekst, id))
-      try DziennikPlus(sciezka: p).dopisz(XCTUnwrap(ZdarzenieWejsciowe.zLinii(Substring(XCTUnwrap(v["linia"]?.tekst))), id))
+      // D-04 (ADR-0036 pkt 3): `linie` = stuknięcie „+2” (dwie linie jednym zapisem); pozostałe wektory mają jedną `linia`.
+      let teksty = try v["linie"]?.tablica?.compactMap(\.tekst) ?? [XCTUnwrap(v["linia"]?.tekst, id)]
+      let zdarzenia = try teksty.map { try XCTUnwrap(ZdarzenieWejsciowe.zLinii(Substring($0)), id) }
+      try DziennikPlus(sciezka: p).dopisz(zdarzenia)
       XCTAssertEqual(tresc(p), v["po"]?.tekst, id)
     }
     w.sprawdz(oczekiwane: idWektorow(lista), minimum: 3)
@@ -155,6 +158,45 @@ final class DziennikTests: XCTestCase {
       XCTAssertEqual(tresc(p), "{\"ogon\"", "\(awaria): plik nie wrócił do stanu sprzed zapisu")
     }
   }
+}
+
+/// ADR-0036 pkt 3 (X-DZ-05, D-04): wszystkie linie stuknięcia jednym `write` — przerwanie między liniami nie może zostawić samej pierwszej.
+extension DziennikTests {
+  func testKrokDwieLinieJednymZapisem() throws {
+    let wzor = try Repo.tekst("tests/wspolne/dziennik-plus-poprawny.jsonl").split(separator: "\n").map { try XCTUnwrap(ZdarzenieWejsciowe.zLinii($0)) }
+    let p = plik("krok.jsonl")
+    let licznik = Zliczanie()
+    try DziennikPlus(sciezka: p) { try UchwytLicznik(sciezka: $0, licznik: licznik) }.dopisz([wzor[0], wzor[1]])
+    XCTAssertEqual(licznik.zapisy, 1, "dwie linie = jeden write")
+    XCTAssertEqual(tresc(p), wzor[0].linia + "\n" + wzor[1].linia + "\n")
+  }
+
+  /// Krótki zapis albo błąd fsync przy dwóch liniach: żadna linia stuknięcia nie zostaje (ftruncate do rozmiaru sprzed zapisu).
+  func testKrokWszystkoAlboNic() throws {
+    let wzor = try Repo.tekst("tests/wspolne/dziennik-plus-poprawny.jsonl").split(separator: "\n").map { try XCTUnwrap(ZdarzenieWejsciowe.zLinii($0)) }
+    for awaria in [Atrapa.Awaria.krotki, .fsync] {
+      let p = plik("krok-awaria.jsonl", tresc: wzor[2].linia + "\n")
+      let d = DziennikPlus(sciezka: p) { try Atrapa(sciezka: $0, awaria: awaria) }
+      XCTAssertThrowsError(try d.dopisz([wzor[0], wzor[1]]), "\(awaria)")
+      XCTAssertEqual(tresc(p), wzor[2].linia + "\n", "\(awaria): została część stuknięcia")
+    }
+  }
+}
+
+/// Zliczanie wywołań `write` przez uchwyty otwierane na czas jednego `dopisz`.
+final class Zliczanie { var zapisy = 0 }
+
+/// Uchwyt na prawdziwym pliku, który liczy `write`.
+final class UchwytLicznik: UchwytDziennika {
+  let prawdziwy: UchwytPosix
+  let licznik: Zliczanie
+  init(sciezka: String, licznik: Zliczanie) throws { prawdziwy = try UchwytPosix(sciezka: sciezka); self.licznik = licznik }
+  func rozmiar() throws -> Int64 { try prawdziwy.rozmiar() }
+  func bajt(na pozycja: Int64) throws -> UInt8 { try prawdziwy.bajt(na: pozycja) }
+  func dopisz(_ bajty: [UInt8]) throws -> Int { licznik.zapisy += 1; return try prawdziwy.dopisz(bajty) }
+  func synchronizuj() throws { try prawdziwy.synchronizuj() }
+  func obetnij(do rozmiar: Int64) throws { try prawdziwy.obetnij(do: rozmiar) }
+  func zamknij() { prawdziwy.zamknij() }
 }
 
 /// Atrapa uchwytu na prawdziwym pliku: zapisuje połowę bajtów (krótki zapis) albo zapisuje całość i pada na fsync.
