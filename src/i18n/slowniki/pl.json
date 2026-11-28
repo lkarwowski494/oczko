@@ -120,7 +120,18 @@
     "dzianina_a11y_cel_przyp_one": "{{czesc}}: {{count}} z {{cel}} rzędów gotowe, w tej sesji {{sesja}}, następne: {{przypomnienie}} w rzędzie {{n}}",
     "dzianina_a11y_cel_przyp_few": "{{czesc}}: {{count}} z {{cel}} rzędów gotowe, w tej sesji {{sesja}}, następne: {{przypomnienie}} w rzędzie {{n}}",
     "dzianina_a11y_cel_przyp_many": "{{czesc}}: {{count}} z {{cel}} rzędów gotowe, w tej sesji {{sesja}}, następne: {{przypomnienie}} w rzędzie {{n}}",
-    "dzianina_a11y_cel_przyp_other": "{{czesc}}: {{count}} z {{cel}} rzędów gotowe, w tej sesji {{sesja}}, następne: {{przypomnienie}} w rzędzie {{n}}"
+    "dzianina_a11y_cel_przyp_other": "{{czesc}}: {{count}} z {{cel}} rzędów gotowe, w tej sesji {{sesja}}, następne: {{przypomnienie}} w rzędzie {{n}}",
+    "menu_ustawienia": "Ustawienia licznika",
+    "plus2_podpis": "rzędy {{od}}–{{do}} skończone",
+    "plus2_oczka": "oczka {{od}}–{{do}}",
+    "plus2_etykieta": "Dodaj 2 rzędy, skończone rzędy {{od}} i {{do}}",
+    "podpowiedz_czas": "{{count}} min bez +1",
+    "podpowiedz_pytanie": "rząd {{n}} skończony?",
+    "podpowiedz_etykieta": "Dodaj rząd. Od {{count}} min bez +1. Rząd {{n}} skończony?",
+    "menu_zdejmij_blokada": "Zdejmij z ekranu blokady",
+    "menu_zdejmij_blokada_opis": "Wróci, gdy znów zaczniesz liczyć.",
+    "menu_zdejmij_blokada_stoper": "Stoper liczy dalej.",
+    "zdjeto_z_blokady_a11y": "Zdjęto z ekranu blokady"
   },
   "limit": {
     "zawczasu_one": "Darmowe dni robótkowe na {{miesiac}} wykorzystane. Liczenie wstrzymane do {{data}}. Zachowane rzędy: {{count}} i reszta danych.",
@@ -414,7 +425,17 @@
     "wloczka_wiersz_a11y_few": "{{nazwa}}, {{count}} motki w zapasie",
     "wloczka_wiersz_a11y_many": "{{nazwa}}, {{count}} motków w zapasie",
     "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} motka w zapasie",
-    "blad_zapisu": "Nie udało się zapisać zmian"
+    "blad_zapisu": "Nie udało się zapisać zmian",
+    "krok": "Krok",
+    "krok_opis": "Ile dodaje jedno stuknięcie. −1 zawsze odejmuje 1.",
+    "podpowiedz_plus": "Podpowiedz, gdy zapomnę +1",
+    "podpowiedz_prog": "Po takim czasie bez +1",
+    "podpowiedz_minuty_one": "{{count}} min",
+    "podpowiedz_minuty_few": "{{count}} min",
+    "podpowiedz_minuty_many": "{{count}} min",
+    "podpowiedz_minuty_other": "{{count}} min",
+    "podpowiedz_opis": "Gdy licznik jest otwarty, przycisk +1 się wyróżni, a telefon raz zawibruje. Najwyżej raz na rząd.",
+    "rodzaj_oczka_opis": "Np. łańcuszek albo nabieranie oczek."
   },
   "ukonczenie": {
     "udostepnij": "Udostępnij",
@@ -625,7 +646,9 @@
     "kafel_rodzina_tytul": "Dla rodziny",
     "kafel_rodzina_opis": "Możesz podzielić się z rodziną przez Chmurę rodzinną.",
     "kafel_dane_tytul": "Dane zawsze twoje",
-    "kafel_dane_opis": "Projekty, wzory i historia zostają, z Pro i bez."
+    "kafel_dane_opis": "Projekty, wzory i historia zostają, z Pro i bez.",
+    "zrealizuj_kod": "Zrealizuj kod",
+    "kod_bez_sieci": "Potrzebne połączenie z internetem."
   },
   "uczciwe": {
     "tytul": "Twój pierwszy dzień robótkowy za tobą",
@@ -687,7 +710,10 @@
     "blad": "Nie udało się. Twoje dane są bez zmian.",
     "eksport_gotowy_tytul": "Eksport gotowy",
     "zastapiono_tytul": "Dane zastąpione",
-    "zastapiono_wroc": "Aby wrócić, otwórz ten plik w Oczku i wybierz „Zastąp to, co jest”."
+    "zastapiono_wroc": "Aby wrócić, otwórz ten plik w Oczku i wybierz „Zastąp to, co jest”.",
+    "konflikt_z_ekranu_blokady": "z ekranu blokady",
+    "konflikt_z_zegarka": "z zegarka",
+    "konflikt_z_aplikacji": "z aplikacji"
   },
   "stan_danych": {
     "tytul": "Dane i synchronizacja",
@@ -1089,7 +1115,8 @@
     "wyjdz_zostan": "Zostań",
     "wyjdz_potwierdz": "Wyjdź bez zapisu",
     "miejsce_tytul": "Urządzenie jest prawie pełne",
-    "miejsce_opis": "Dodane zakreślenia i rysunki mogą się nie zapisać. Zwolnij trochę miejsca, zanim zaczniesz rysować."
+    "miejsce_opis": "Dodane zakreślenia i rysunki mogą się nie zapisać. Zwolnij trochę miejsca, zanim zaczniesz rysować.",
+    "podpowiedz_tekst": "Rozpiska tekstem? Wklej ją do notatki — przycisk „Notatka” przy liczniku."
   },
   "udostepnij": {
     "tytul": "Dodaj do Oczka",

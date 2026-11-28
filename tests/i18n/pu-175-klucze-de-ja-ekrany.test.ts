@@ -5,6 +5,7 @@
 // OCZKO_SLOWNIKI_DIR (tylko dla próby na kopii słowników; domyślnie src/i18n/slowniki) wskazuje katalog z en.json, de.json, ja.json.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { OCZEKUJACE_DO_FALI_1_0_2 } from './fala-2026-11-03';
 
 const KATALOG = process.env.OCZKO_SLOWNIKI_DIR ?? join(__dirname, '../../src/i18n/slowniki');
 // Przestrzenie nazw kluczy ekranów z PU-175: jezyk, (zakladki)/index = dzis + zakladki, licznik, oferty; scenariusz 118 przechodzi też przez ustawienia i przewodnik.
@@ -33,7 +34,8 @@ describe('PU-175 · de i ja mają przekład każdego klucza ekranów języka, �
     for (const p of PRZESTRZENIE) expect([...en.keys()].filter((k) => k.startsWith(`${p}.`)).length).toBeGreaterThan(0);
   });
   test.each(['de', 'ja'])('PU-175: %s — brak kluczy = brak', (jezyk) => {
-    expect(brakujaceKlucze(en, czytaj(jezyk), PRZESTRZENIE)).toEqual([]);
+    // P-1133 (KO-239, wyjątek nazwany): klucze 1.0.2 czekające na falę przekładu 09 (tylko lista OCZEKUJACE_DO_FALI_1_0_2, ta sama co w pierwsze-w-fali-154) nie są jeszcze w de i ja; każdy inny brak nadal pada.
+    expect(brakujaceKlucze(en, czytaj(jezyk), PRZESTRZENIE).filter((k) => !OCZEKUJACE_DO_FALI_1_0_2.includes(k))).toEqual([]);
   });
   test('pułapka: kontrola widzi usunięty klucz i pusty przekład, a końcówki liczby mnogiej japońskiego (tylko other) nie są brakiem', () => {
     const zrodlo: Plaski = new Map<string, unknown>([['licznik.a', 'A'], ['licznik.seria_one', '1'], ['licznik.seria_other', 'n'], ['dzis.b', 'B'], ['inne.c', 'C']]);

@@ -82,7 +82,18 @@
     "dzianina_a11y_cel_one": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session",
     "dzianina_a11y_cel_other": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session",
     "dzianina_a11y_cel_przyp_one": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session, next {{przypomnienie}} at row {{n}}",
-    "dzianina_a11y_cel_przyp_other": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session, next {{przypomnienie}} at row {{n}}"
+    "dzianina_a11y_cel_przyp_other": "{{czesc}}: {{count}} of {{cel}} rows done, {{sesja}} this session, next {{przypomnienie}} at row {{n}}",
+    "menu_ustawienia": "Counter settings",
+    "plus2_podpis": "rows {{od}}–{{do}} done",
+    "plus2_oczka": "stitches {{od}}–{{do}}",
+    "plus2_etykieta": "Add 2 rows, rows {{od}} and {{do}} done",
+    "podpowiedz_czas": "{{count}} min without +1",
+    "podpowiedz_pytanie": "row {{n}} done?",
+    "podpowiedz_etykieta": "Add row. No +1 for {{count}} min. Row {{n}} done?",
+    "menu_zdejmij_blokada": "Remove from Lock Screen",
+    "menu_zdejmij_blokada_opis": "It comes back when you count again.",
+    "menu_zdejmij_blokada_stoper": "The timer keeps running.",
+    "zdjeto_z_blokady_a11y": "Removed from Lock Screen"
   },
   "limit": {
     "zawczasu_one": "No free crafting days left in {{miesiac}}. Counting is paused until {{data}}. Your {{count}} row and everything else are kept.",
@@ -336,7 +347,15 @@
     "wloczka_pusto": "No yarn in your stash yet. Add the yarn you’re using first, then choose it here.",
     "wloczka_wiersz_a11y_one": "{{nazwa}}, {{count}} skein in your stash",
     "wloczka_wiersz_a11y_other": "{{nazwa}}, {{count}} skeins in your stash",
-    "blad_zapisu": "Couldn’t save your changes"
+    "blad_zapisu": "Couldn’t save your changes",
+    "krok": "Step",
+    "krok_opis": "How much one tap adds. −1 always subtracts 1.",
+    "podpowiedz_plus": "Nudge me if I forget +1",
+    "podpowiedz_prog": "After this long without +1",
+    "podpowiedz_minuty_one": "{{count}} min",
+    "podpowiedz_minuty_other": "{{count}} min",
+    "podpowiedz_opis": "While the counter is open, the +1 button stands out and your phone vibrates once. At most once per row.",
+    "rodzaj_oczka_opis": "For example, a chain or casting on."
   },
   "ukonczenie": {
     "udostepnij": "Share",
@@ -503,7 +522,9 @@
     "kafel_rodzina_tytul": "For your family",
     "kafel_rodzina_opis": "You can share it with your family through Family Sharing.",
     "kafel_dane_tytul": "Your data stays yours",
-    "kafel_dane_opis": "Projects, patterns, and history stay, with Pro or without."
+    "kafel_dane_opis": "Projects, patterns, and history stay, with Pro or without.",
+    "zrealizuj_kod": "Redeem code",
+    "kod_bez_sieci": "An internet connection is needed."
   },
   "uczciwe": {
     "tytul": "Your first crafting day is done",
@@ -551,7 +572,10 @@
     "blad": "That didn’t work. Your data is unchanged.",
     "eksport_gotowy_tytul": "Export ready",
     "zastapiono_tytul": "Data replaced",
-    "zastapiono_wroc": "To go back, open that file in Oczko and choose Replace."
+    "zastapiono_wroc": "To go back, open that file in Oczko and choose Replace.",
+    "konflikt_z_ekranu_blokady": "from the Lock Screen",
+    "konflikt_z_zegarka": "from Apple Watch",
+    "konflikt_z_aplikacji": "from the app"
   },
   "stan_danych": {
     "tytul": "Data and sync",
@@ -913,7 +937,8 @@
     "wyjdz_zostan": "Stay",
     "wyjdz_potwierdz": "Leave unsaved",
     "miejsce_tytul": "Your device is almost full",
-    "miejsce_opis": "Highlights and drawings you add may not be saved. Free some space before you draw."
+    "miejsce_opis": "Highlights and drawings you add may not be saved. Free some space before you draw.",
+    "podpowiedz_tekst": "Pattern written out as text? Paste it into a note — the Note button on the counter."
   },
   "udostepnij": {
     "tytul": "Add to Oczko",
