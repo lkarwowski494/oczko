@@ -1,0 +1,7 @@
+PR1 (04 fix) — npm run verify, 2026-11-28, drzewo robocze = commit c9ae3e7c (zmiany tylko w docs/), Linux, Node v22.23.5
+typecheck, typecheck:testy, lint, jakosc:kontrole, npm test
+Test Suites: 749 passed, 749 total
+Tests:       8438 passed, 8438 total
+Time:        202.428 s
+kod 0
+Ponowny przebieg: hak pre-push przy wypchnięciu (wynik w logu pushu).

@@ -3,7 +3,7 @@
 Aktualizacja: 2026-11-28 · Gałąź `claude/pr1-projekt-1-0-2-2026-11-28` od 19f07773 · Polecenie: `docs/koordynacja/polecenia/PR1.md` @ ffb13539 (gałąź `koordynacja`) · Prompt: `04-studio-projektowe --tryb fix --moduly przeplywy-i-gesty,kontekst-oczy-zajete,render-i-krytyka --zadania ZM-21…ZM-26` (prompts @af4c0a8).
 
 ## Zrobione
-- STOP E0 (plan, klasyfikacja D/P) wysłany koordynatorowi; odpowiedź AR1 na pytanie U3 przyszła (bez migracji). Odpowiedź na plan: brak w chwili zapisu — praca według rekomendacji, opcje wyrenderowane do weta.
+- STOP E0 (plan, klasyfikacja D/P) wysłany koordynatorowi; plan przyjęty (KO-233: U4 A, U6 A, U7 B2, U5 jak Trening; bez osobnego STOP E2); AR1 na pytanie U3: bez migracji, tylko nowe liczniki.
 - Makiety i zrzuty: `docs/design/1-0-2/` (24 ekrany, 132 zrzuty, 3 arkusze przeglądu, kontrast kod 0, warsztat kod 0).
 - Spec, przejście poznawcze, klucze i18n, paczka 07/08: `docs/design/1-0-2.md`.
 - Decyzje P-1100 (U4), P-1101 (U3, U5, U10), P-1102 (U6), P-1103 (U7) — do weta.
