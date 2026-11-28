@@ -365,6 +365,7 @@ jobs:
           # 07-jakosc-001 (KO-054, P-781; PE1, KO-222, P-1076): awaria sterownika XCTest / symulatora w junit 1. podejścia (scripts/ci/e2e-awaria-maszyny.mjs)
           # przerywa je i powtarza RAZ tylko scenariusze (a) z awarią maszyny i (b) niewykonane w 1. podejściu — także te z własną asercją licznika (asercja
           # licznika się nie wykonała). Zielone i porażki asercji (P-091 9a/10a, także informacyjne) nie biegną drugi raz: ich wynik z 1. podejścia zostaje.
+          # KA1 (KO-228, P-1084, DG3): awarią maszyny jest też porażka BEZ junit z logiem xctest_runner_*.log i bez commands.json w e2e-out/$n (sterownik nie wstał).
           # Awaria w 2. podejściu liczy się jak porażka. Run 45971994915 (DG2): 26 zielonych + awaria na ostatnim — powtórzenie całego zestawu przekraczało limit kroku.
           przebieg() { # $1 = numer podejścia; ustawia porazki i awaria („scenariusz: przyczyna”, tylko w 1. podejściu)
             mkdir -p e2e-out; porazki=0; awaria=""; : > e2e-out/wyniki.txt
@@ -372,7 +373,7 @@ jobs:
               n=$(basename "$f" .yaml)
               [[ " $POMIN " == *" $n "* ]] && continue # wynik z 1. podejścia (zielony albo porażka, nie maszyna) — bez ponowienia
               if maestro --device "$SIM" test "$f" --format junit --output "e2e-out/$n.xml" --test-output-dir "e2e-out/$n"; then echo "zielony $n" >> e2e-out/wyniki.txt; continue; fi
-              if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml"); then
+              if [ "$1" = 1 ] && przyczyna=$(node scripts/ci/e2e-awaria-maszyny.mjs "e2e-out/$n.xml" "e2e-out/$n"); then
                 awaria="$n: $przyczyna"; echo "awaria-maszyny $n" >> e2e-out/wyniki.txt
                 python3 .github/scripts/jakosc/maestro-failures.py "e2e-out/$n" || true
                 return 0

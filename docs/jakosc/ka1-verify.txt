@@ -1,0 +1,4 @@
+KA1 verify (npm run verify) na 34c76bbf+zmiany, 2026-11-28
+typecheck, typecheck:testy, lint, jakosc:kontrole, npm test: Test Suites: 749 passed, 749 total; Tests: 8433 passed, 8433 total
+tests/jakosc/e2e-awaria-maszyny.test.ts: 35/35 (czerwone przed poprawką na 34c76bbf: 4)
+KOD=0

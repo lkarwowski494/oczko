@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 // 07-jakosc-001 (JAK-05; KO-054, P-781): czy porażka scenariusza Maestro to awaria maszyny (sterownik XCTest / symulator), a nie scenariusza.
-//   node scripts/ci/e2e-awaria-maszyny.mjs <junit.xml>  → kod 0 i przyczyna (pierwsza linia <failure>/<error>) na stdout, gdy awaria maszyny;
-//                                                        kod 1, gdy porażka scenariusza (np. „Assertion is false”) albo brak pliku junit.
+//   node scripts/ci/e2e-awaria-maszyny.mjs <junit.xml> [<katalog-wynikow>]
+//                                                      → kod 0 i przyczyna (jedna linia) na stdout, gdy awaria maszyny;
+//                                                        kod 1, gdy porażka scenariusza (np. „Assertion is false”) albo brak dowodu awarii.
+// KA1 (KO-228, P-1084, DG3): gdy NIE MA pliku junit, a podano katalog wyników scenariusza (`--test-output-dir`), awarią maszyny jest też: w katalogu (rekurencyjnie)
+// jest `xctest_runner_*.log` i nie ma żadnego `commands.json` (sterownik XCTest nie wstał, żaden krok scenariusza nie ruszył; Maestro zgłasza to na konsoli,
+// zanim zapisze junit — run 46062593787, scen. 02, IOSDriverTimeoutException). Kod wyjścia scenariusza ≠ 0 zapewnia wywołujący (klasyfikator woła się po porażce).
+// Wąsko: brak junit bez logu runnera (np. przerwanie limitem) albo z `commands.json` (scenariusz ruszył) nadal jest porażką scenariusza. Gdy junit jest, decyduje junit.
 // Czyta tylko treść elementów <failure> i <error>: nazwa testu ani tagi nie decydują. Wzorce: DeviceUnreachableException z #142, #173, #182
 // (raport BB 2026-11-12, 07-jakosc-001) i dwa z Treningu (`.github/workflows/e2e-ios.yml:223`, @2d97581: „iOS driver not ready in time|deviceInfo failed”).
 // Używa jakosc-ios.yml (krok „Scenariusze”): awaria maszyny w 1. podejściu → jedno powtórzenie tylko scenariuszy z awarią i niewykonanych (PE1, P-1076).
@@ -30,10 +35,29 @@ export function awariaMaszyny(junit) {
   return null;
 }
 
+const LOG_RUNNERA = /^xctest_runner_.*\.log$/;
+const COMMANDS = /^commands(-.*)?\.json$/; // jak w czas-startu.mjs: Maestro 2.12.1 zapisuje `commands.json`
+
+/** Przyczyna (jedna linia), gdy w katalogu wyników jest log runnera XCTest i brak commands.json; inaczej null. */
+export function runnerNieWstal(katalog) {
+  let log = null, commands = false;
+  const przejdz = (dir) => {
+    let wpisy;
+    try { wpisy = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const w of wpisy) {
+      if (w.isDirectory()) przejdz(`${dir}/${w.name}`);
+      else if (COMMANDS.test(w.name)) commands = true;
+      else if (LOG_RUNNERA.test(w.name) && log === null) log = w.name;
+    }
+  };
+  przejdz(katalog);
+  return log !== null && !commands ? `brak junit; ${log} bez commands.json (sterownik XCTest nie wstał, scenariusz nie ruszył)` : null;
+}
+
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) { // realpath: wywołanie przez dowiązanie (test)
-  const plik = process.argv[2];
-  if (!plik || !fs.existsSync(plik)) process.exit(1);
-  const przyczyna = awariaMaszyny(fs.readFileSync(plik, 'utf8'));
+  const [plik, katalog] = process.argv.slice(2);
+  if (!plik) process.exit(1);
+  const przyczyna = fs.existsSync(plik) ? awariaMaszyny(fs.readFileSync(plik, 'utf8')) : katalog ? runnerNieWstal(katalog) : null;
   if (!przyczyna) process.exit(1);
   console.log(przyczyna);
 }

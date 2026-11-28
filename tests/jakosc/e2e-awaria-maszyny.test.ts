@@ -15,7 +15,7 @@ const KLASYFIKATOR = path.join(KORZEN, 'scripts', 'ci', 'e2e-awaria-maszyny.mjs'
 const wf = parse(fs.readFileSync(path.join(KORZEN, '.github/workflows/jakosc-ios.yml'), 'utf8'));
 const krokScenariusze = () => { const k = yamlKroki(wf, 'e2e').find((x) => /^Scenariusze$/.test(x.name ?? '')); if (!k?.run) throw new Error('brak kroku Scenariusze'); return k.run; };
 
-type Wynik = 'zielony' | 'awaria' | 'asercja' | 'limit' | 'bez-junit'; // limit: GitHub przerywa krok (timeout-minutes) w trakcie scenariusza — TERM do powłoki kroku
+type Wynik = 'zielony' | 'awaria' | 'asercja' | 'limit' | 'bez-junit' | 'runner-bez-commands' | 'runner-z-commands'; // limit: GitHub przerywa krok (timeout-minutes) w trakcie scenariusza — TERM do powłoki kroku
 const S01 = '01-nfr-pie-001-pierwsze-liczenie', S02 = '02-br-lic-001-s1-pierwsze-uruchomienie', S03 = '03-br-lic-001-s2-pierwszy-rzad';
 
 /** Krok „Scenariusze” jak w GitHub (bash -e); `plan[scenariusz]` = wyniki kolejnych wywołań maestro dla tego scenariusza (ostatni się powtarza). */
@@ -27,8 +27,8 @@ function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>, sce
   const bin = path.join(d, 'bin'); fs.mkdirSync(bin);
   fs.writeFileSync(path.join(bin, 'maestro'), [
     '#!/bin/bash',
-    'out=""; prev=""; n=""',
-    'for a in "$@"; do case "$a" in *.yaml) n=$(basename "$a" .yaml);; esac; [ "$prev" = --output ] && out="$a"; prev="$a"; done',
+    'out=""; tod=""; prev=""; n=""',
+    'for a in "$@"; do case "$a" in *.yaml) n=$(basename "$a" .yaml);; esac; [ "$prev" = --output ] && out="$a"; [ "$prev" = --test-output-dir ] && tod="$a"; prev="$a"; done',
     'echo "$n" >> "$WYWOLANIA"; k=$(grep -cx "$n" "$WYWOLANIA")',
     'w=$(node -e \'const p=JSON.parse(process.env.PLAN)[process.argv[1]]||[];console.log(p[Math.min(Number(process.argv[2]),p.length)-1]||"zielony")\' "$n" "$k")',
     'case "$w" in',
@@ -36,6 +36,10 @@ function uruchom(plan: Record<string, Wynik[]>, env: Record<string, string>, sce
     '  asercja) cp "$FIKSTURY/junit-asercja.xml" "$out"; exit 1;;',
     '  limit) kill -TERM $PPID; exit 1;;',
     '  bez-junit) exit 1;;', // porażka bez pliku junit (maestro padło przed zapisem raportu)
+    // KA1 (P-1084, DG3): sterownik nie wstał — junit nie powstał, w katalogu wyników tylko log runnera (jak 02 w run 46062593787: `<scenariusz>/<data>/xctest_runner_*.log`)
+    '  runner-bez-commands) mkdir -p "$tod/2026-11-27_204959"; echo "Testing started" > "$tod/2026-11-27_204959/xctest_runner_2026-11-27_205028.log"; exit 1;;',
+    // log runnera i commands.json: sterownik wstał i scenariusz ruszył (Maestro zapisało kroki), więc to nie ta awaria
+    '  runner-z-commands) mkdir -p "$tod/2026-11-27_204959/flow"; echo "Testing started" > "$tod/2026-11-27_204959/xctest_runner_2026-11-27_205028.log"; cp "$FIKSTURY/commands-przerwany.json" "$tod/2026-11-27_204959/flow/commands.json"; exit 1;;',
     '  *) echo "<testsuites/>" > "$out"; exit 0;;',
     'esac', ''].join('\n'), { mode: 0o755 });
   fs.writeFileSync(path.join(bin, 'python3'), '#!/bin/bash\nexit 0\n', { mode: 0o755 });
@@ -206,6 +210,60 @@ describe('PE1 (KO-222, P-1076…P-1078) · ponowienie tylko scenariuszy z awari�
   });
 });
 
+describe('KA1 (KO-228, P-1084, DG3) · brak junit + log runnera bez commands.json = awaria maszyny', () => {
+  const S04 = '04-br-lic-002-s1-licznik-krok', S05 = '05-br-lic-003-s1-edycja';
+  const WSZYSTKIE = [S01, S02, S03, S04, S05];
+  const ENV5 = { PONAWIALNE: `${S02}.yaml`, BRAMKA: WSZYSTKIE.map((n) => `${n}.yaml`).join(' ') };
+
+  test('(a) kod ≠ 0, brak junit, xctest_runner_*.log bez commands.json (scenariusz bramkowy, nieponawialny) → awaria maszyny: ponowiony on i niewykonane; job zielony; wykaz w podsumowaniu', () => {
+    const r = uruchom({ [S03]: ['runner-bez-commands', 'zielony'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania).toEqual([S01, S02, S03, S03, S04, S05]); // 04 i 05 niewykonane w 1. podejściu (przebieg 1 kończy się na awarii)
+    expect(r.kod).toBe(0);
+    expect(r.podsumowanie).toMatch(/powtórzenie scenariuszy/i);
+    expect(r.podsumowanie).toMatch(new RegExp(`ponowione scenariusze[^\\n]*awaria maszyny: ${S03}[^\\n]*niewykonane w 1\\. podejściu: ${S04} ${S05}`, 'i'));
+    expect(r.podsumowanie).toMatch(new RegExp(`awaria-maszyny ${S03}`));
+    expect(r.podsumowanie).toMatch(new RegExp(`wynik 2\\. podejścia dla ${S03}: zielony ${S03}`));
+    expect(fs.existsSync(path.join(r.d, 'e2e-out', 'podejscie-1'))).toBe(true);
+  });
+
+  test('(a) kształt z DG3: awaria bez junit w 02 (poza PONAWIALNE) → ponowiony 02, nie „czerwony” z 1. podejścia', () => {
+    const r = uruchom({ [S02]: ['runner-bez-commands', 'zielony'] }, { PONAWIALNE: '', BRAMKA: ENV.BRAMKA });
+    expect(r.wywolania).toEqual([S01, S02, S02]);
+    expect(r.kod).toBe(0);
+    expect(r.podsumowanie).toMatch(new RegExp(`ponowione scenariusze[^\\n]*awaria maszyny: ${S02}`, 'i'));
+  });
+
+  test('(a) awaria bez junit także w 2. podejściu → czerwony, bez trzeciego podejścia', () => {
+    const r = uruchom({ [S03]: ['runner-bez-commands', 'runner-bez-commands', 'zielony'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania.filter((n) => n === S03)).toHaveLength(2);
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S03}`);
+  });
+
+  test('(b) kod ≠ 0, brak junit i brak logu runnera → porażka scenariusza, bez ponowienia, bez cichej zieleni (jak przed KA1)', () => {
+    const r = uruchom({ [S03]: ['bez-junit', 'zielony'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania).toEqual([S01, S02, S03, S04, S05]);
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S03}`);
+    expect(r.podsumowanie).not.toMatch(/powtórzenie scenariuszy/i);
+    expect(r.podsumowanie).not.toMatch(new RegExp(`zielony ${S03}`));
+  });
+
+  test('(c) brak junit, log runnera Z commands.json (scenariusz ruszył) → porażka scenariusza, bez ponowienia', () => {
+    const r = uruchom({ [S03]: ['runner-z-commands', 'zielony'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania).toEqual([S01, S02, S03, S04, S05]);
+    expect(r.kod).not.toBe(0);
+    expect(r.podsumowanie).toContain(`czerwony ${S03}`);
+    expect(r.podsumowanie).not.toMatch(/powtórzenie scenariuszy/i);
+  });
+
+  test('(d) porażka asercji (junit jest) nadal bez ponowienia (P-091 9a); limit czasu i brak continue-on-error pilnuje test „zestaw kontroli bez zmian” wyżej', () => {
+    const r = uruchom({ [S03]: ['asercja', 'zielony'] }, ENV5, WSZYSTKIE);
+    expect(r.wywolania.filter((n) => n === S03)).toHaveLength(1);
+    expect(r.kod).not.toBe(0);
+  });
+});
+
 describe('07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs)', () => {
   const klasyfikuj = (plik: string) => spawnSync('node', [KLASYFIKATOR, plik], { encoding: 'utf8' });
   test('junit z DeviceUnreachableException (#182) → awaria maszyny (kod 0), przyczyna na wyjściu', () => {
@@ -240,5 +298,42 @@ describe('07-jakosc-001 · klasyfikator junit (scripts/ci/e2e-awaria-maszyny.mjs
       expect(r.status).toBe(0);
       expect(r.stdout.trim()).toBe(komunikat);
     }
+  });
+});
+
+describe('KA1 (KO-228, P-1084) · klasyfikator bez junit: katalog wyników jako 2. argument', () => {
+  const klasyfikuj = (...arg: string[]) => spawnSync('node', [KLASYFIKATOR, ...arg], { encoding: 'utf8' });
+  const katalog = (pliki: Record<string, string>) => {
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-kat-'));
+    for (const [rel, tresc] of Object.entries(pliki)) { fs.mkdirSync(path.dirname(path.join(d, rel)), { recursive: true }); fs.writeFileSync(path.join(d, rel), tresc); }
+    return d;
+  };
+  const NIE_MA = path.join(FIKSTURY, 'nie-ma.xml');
+  const LOG = '2026-11-27_204959/xctest_runner_2026-11-27_205028.log';
+
+  test('brak junit + xctest_runner_*.log bez commands.json → awaria maszyny (kod 0), przyczyna w jednej linii', () => {
+    const r = klasyfikuj(NIE_MA, katalog({ [LOG]: 'Testing started\n' }));
+    expect(r.status).toBe(0);
+    expect(r.stdout.trim().split('\n')).toHaveLength(1);
+    expect(r.stdout).toMatch(/brak junit/);
+    expect(r.stdout).toMatch(/xctest_runner/);
+  });
+  test('brak junit, katalog bez logu runnera (albo pusty / nieistniejący) → nie maszyna (kod 1)', () => {
+    expect(klasyfikuj(NIE_MA, katalog({ 'x/inny.log': 'a' })).status).toBe(1);
+    expect(klasyfikuj(NIE_MA, katalog({})).status).toBe(1);
+    expect(klasyfikuj(NIE_MA, path.join(FIKSTURY, 'nie-ma-katalogu')).status).toBe(1);
+  });
+  test('brak junit, log runnera i commands.json (też głębiej w katalogu) → nie maszyna (kod 1)', () => {
+    expect(klasyfikuj(NIE_MA, katalog({ [LOG]: 'Testing started\n', '2026-11-27_204959/flow/commands.json': '[]' })).status).toBe(1);
+    expect(klasyfikuj(NIE_MA, katalog({ [LOG]: 'x', 'commands.json': '[]' })).status).toBe(1);
+  });
+  test('junit jest: decyduje junit, katalog nie zmienia wyniku (asercja z logiem runnera → kod 1; DeviceUnreachableException → kod 0)', () => {
+    const d = katalog({ [LOG]: 'Testing started\n' });
+    expect(klasyfikuj(path.join(FIKSTURY, 'junit-asercja.xml'), d).status).toBe(1);
+    expect(klasyfikuj(path.join(FIKSTURY, 'junit-device-unreachable.xml'), d).status).toBe(0);
+  });
+  test('log runnera tylko w nazwie katalogu albo inny plik z „xctest_runner” w środku nazwy nie liczy się (wąskie kryterium)', () => {
+    expect(klasyfikuj(NIE_MA, katalog({ 'xctest_runner_x.log/inny.txt': 'a' })).status).toBe(1);
+    expect(klasyfikuj(NIE_MA, katalog({ 'a/kopia-xctest_runner_1.log.bak': 'a' })).status).toBe(1);
   });
 });
