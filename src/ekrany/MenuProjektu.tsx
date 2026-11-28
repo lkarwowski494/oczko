@@ -10,7 +10,7 @@ import { odstep } from './motyw';
 import type { Tlumacz } from './wspolne';
 
 export type PropsMenuProjektu = {
-  stan: { projekt: string; zablokowany: boolean; wartosc: number; oczka?: boolean }; // oczka: bez „znaczenie liczby” (07-jakosc-025)
+  stan: { projekt: string; zablokowany: boolean; wartosc: number; oczka?: boolean; naEkranieBlokady?: boolean; stoperTrwa?: boolean }; // oczka: bez „znaczenie liczby” (07-jakosc-025)
   t: Tlumacz;
   naNazwa(): void; naWpisz(): void;
   naZablokuj(): void; naOdblokuj(): void;
@@ -18,6 +18,10 @@ export type PropsMenuProjektu = {
   naZeruj(): void;
   naUkoncz(): void;
   naZnaczenie?(): void; // F-09 (partia 5, design-spec: `menu.znaczenie` w ••• licznika)
+  /** ZM-24/ZM-25 (P-1102, P-1103): „Ustawienia licznika” na końcu pierwszej grupy (krok i podpowiedź +1); bez propsu pozycji nie ma. */
+  naUstawienia?(): void;
+  /** ZM-27 (b) (P-1107, ADR-0037): pozycja tylko, gdy Live Activity pokazuje ten licznik (`naEkranieBlokady`); `stoperTrwa` dopisuje, że stoper liczy dalej; stuknięcie bez potwierdzenia. */
+  naZdejmijZBlokady?(): void;
   naZamknij(): void;
 };
 export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
@@ -30,8 +34,13 @@ export function MenuProjektu(p: PropsMenuProjektu): React.ReactElement {
         <PozycjaMenu tekst={t('menu.nazwa')} onPress={p.naNazwa} testID="menu-nazwa" />
         <PozycjaMenu tekst={t('menu.wpisz')} onPress={p.naWpisz} testID="menu-wpisz-wartosc" />
         {p.naZnaczenie && !s.oczka && <PozycjaMenu tekst={t('menu.znaczenie')} onPress={p.naZnaczenie} testID="menu-znaczenie" />}
+        {p.naUstawienia && <PozycjaMenu tekst={t('licznik.menu_ustawienia')} onPress={p.naUstawienia} testID="licznik-menu-ustawienia" />}
       </GrupaMenu>
       <GrupaMenu>
+        {s.naEkranieBlokady && p.naZdejmijZBlokady && (
+          <PozycjaMenu tekst={t('licznik.menu_zdejmij_blokada')} testID="licznik-menu-zdejmij-blokada" onPress={p.naZdejmijZBlokady}
+            podpis={s.stoperTrwa ? [t('licznik.menu_zdejmij_blokada_opis'), t('licznik.menu_zdejmij_blokada_stoper')] : [t('licznik.menu_zdejmij_blokada_opis')]} />
+        )}
         {s.zablokowany
           ? <PozycjaMenu tekst={t('menu.odblokuj')} onPress={p.naOdblokuj} testID="menu-odblokuj" />
           : <PozycjaMenu tekst={t('menu.zablokuj')} onPress={p.naZablokuj} testID="menu-zablokuj" />}

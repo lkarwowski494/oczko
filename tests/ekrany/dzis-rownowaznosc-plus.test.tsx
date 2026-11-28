@@ -14,7 +14,7 @@ import { czesc, licznik, projekt } from '../dane/pomocnicze/dane-wejsciowe';
 import { przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
 import { atrapaCyklu, atrapaHaptyki, atrapaSystemu, stanLicznika, tEn } from './pomoc';
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 const atrapaSklepu = () => ({ produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) }) as unknown as jest.Mocked<Sklep>;
 type Ekran = 'dzis' | 'licznik';

@@ -10,7 +10,7 @@ import { atrapaIcloud } from '../../src/platforma/icloud-atrapa';
 import { sterownikSynchronizacji } from '../../src/przypadki-uzycia/synchronizacja';
 import { przygotuj, MIN } from './pomocnicze/srodowisko';
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 
 async function j(): Promise<Jezyk> {

@@ -15,6 +15,8 @@ import { biezacyLicznik, widokLicznika, zapamietajLicznik, type WidokLicznika } 
 import { miejscePracy, type MiejscePracy } from './miejsce-pracy';
 import type { ZaleznosciDziennika, ZaleznosciStartu } from '../przypadki-uzycia/zaleznosci';
 import { kandydaciKonfliktu, rozstrzygnijKonflikt } from '../przypadki-uzycia/synchronizacja';
+import { decyzjaAktywnosci, type ZdarzenieAktywnosci } from '../domena/aktywnosc';
+import { LIVE_KONIEC_PO_MS } from '../konfiguracja';
 import { celDniaOsiagniety, wejscie, zdarzeniaPlus } from './licznik-zdarzenia';
 import { odbiorZZegarka } from './zegarek-odbior';
 import { dostepLicznika, type DostepLicznika } from './licznik-dostep';
@@ -48,8 +50,10 @@ export type KompozycjaLicznika = {
   zamknij(): void;
   /** Bieżący model licznika dla arkuszy (menu, formularze, historia); `null` przed pierwszym +1. */
   widok(): Promise<WidokLicznika | null>;
-  /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. */
-  poZmianie(): Promise<void>;
+  /** Po zapisie z arkusza: stan ekranu blokady i zegarka, potem przeładowanie ekranu licznika. `zdarzenie`: `liczenie` (zmiana wartości: start Live Activity, ADR-0037 (1)); domyślnie `odswiezenie` (nigdy nie startuje). */
+  poZmianie(zdarzenie?: ZdarzenieAktywnosci): Promise<void>;
+  /** ZM-27 (b) (ADR-0037 (5)): Live Activity Oczka — stan natywny (nie flaga) i zdjęcie z menu; następne liczenie uruchamia ją od nowa. */
+  ekranBlokady: { aktywna(): boolean; zdejmij(): Promise<void>; /** Stoper projektu `trwa` (dopisek pozycji menu: zdjęcie go nie zatrzymuje). */ stoperTrwa(projektId: string): Promise<boolean> };
   /**
    * Wpisanie wartości z arkusza (F-45; 07-jakosc-011 S4, RD-13-W23): zapis, odświeżenie i — gdy nowy rząd w robocie ma przypomnienie — jedno wejście w rząd
    * (najnowsze, nie każde pominięte). Mniejsza wartość nie daje sygnału (RD-13-W8). `wibracje` = preferencja haptyki.
@@ -74,7 +78,6 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
   let zakladanie: Promise<Wynik<boolean>> | null = null; // trwające zakładanie projektu roboczego z kafla „Dodaj wzór”
   let start: Promise<Wynik<WynikStartuDanych>> | null = null;
   let baner: BanerLicznika = null;
-  let aktywnosc = false;
   /** Rzędy zrobione dziś w ostatnio odczytanym stanie (punkt odniesienia „cel dnia osiągnięty” po +1; jeden dzień, jeden projekt). */
   let zrobioneDzis: { projektId: string; dzien: string; rzedy: number } | null = null;
   let wersja = 0;
@@ -106,14 +109,11 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     const inna = k.find((x) => !x.tutaj) ?? k.find((x) => x !== tutaj);
     return inna ? { lokalna: tutaj?.wartosc ?? 0, zdalna: inna.wartosc, urzadzenie: inna.rodzaj ? NAZWA_URZADZENIA[inna.rodzaj] : inna.urzadzenie } : null;
   }
-  async function poZapisie(w: WidokLicznika | null): Promise<void> {
+  /** Stan ekranu blokady i zegarka po zapisie; start / aktualizacja / koniec Live Activity wg `decyzjaAktywnosci` na stanie natywnym (ADR-0037), start tylko przy `liczenie`. */
+  async function poZapisie(w: WidokLicznika | null, zdarzenie: ZdarzenieAktywnosci = 'odswiezenie'): Promise<void> {
     if (!w) return;
     const nazwa = w.projekt.nienazwany ? etykietaRobocza(w.projekt.utworzonoMs, z.zegar.teraz().ms, j, z.zegar.teraz().strefa) : w.projekt.nazwa;
-    const e = await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy() });
-    if (e.ok && !aktywnosc) {
-      aktywnosc = true;
-      await z.liveActivity.start(e.wartosc);
-    }
+    await odswiezEkranBlokady(z, { licznikId: w.licznikId, nazwa, dostep: dostep.biezacy(), zdarzenie });
   }
   const potwierdz = (ids: readonly string[]) => { if (ids.length > 0) z.zegarek.potwierdz(ids); };
   /** Przebieg odbioru +1 z zegarka (ADR-0030 pkt 2): scalenie → potwierdzenia → stan → ekran od nowa → ekran blokady i zegarek (z potwierdzonymi id). */
@@ -154,7 +154,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
     if (!r.ok) return ekranu(r);
     baner = null; // baner „Removed …” znika przy kolejnym +1 (design-spec „Baner strażnika”)
     const { s, w } = await stan(); // jeden odczyt po zapisie: wartość, zdarzenia i pełny stan ekranu (BX20: ekran nie czyta stanu drugi raz po „+1”)
-    void poZapisie(w);
+    void poZapisie(w, 'liczenie');
     if (!w) return { ok: false, powod: 'bledne_dane' };
     const sygnal = wejscie(w, r.wartosc.wartosc - 1);
     return { ok: true, wartosc: { skonczone: w.wartosc, dziergany: w.wartosc + 1, zdarzenia: zdarzeniaPlus(w, sygnal !== null, celDniaOsiagniety(przed, w)), wejscieWPrzypomnienie: sygnal, stan: s } };
@@ -200,14 +200,24 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       }
       await k.poZmianie();
     },
-    zresetuj() { void o.skrzynka?.migawka(); licznikId = null; baner = null; aktywnosc = false; wersja += 1; void z.liveActivity.zakoncz(); },
+    zresetuj() { void o.skrzynka?.migawka(); licznikId = null; baner = null; wersja += 1; void z.liveActivity.zakoncz(); },
     widok: async () => (await stan()).w,
-    async poZmianie() {
+    async poZmianie(zdarzenie = 'odswiezenie') {
       void o.skrzynka?.migawka().catch(() => undefined); // partia 6: migawka dla rozszerzenia po każdej zmianie projektu (kontrakt: po COMMIT operacji listy)
       baner = null;
       const { w } = await stanPoZapisie();
-      await poZapisie(w);
+      await poZapisie(w, zdarzenie);
       wersja += 1;
+    },
+    ekranBlokady: {
+      aktywna: () => z.liveActivity.aktywna(),
+      async zdejmij() { // AK-07/AK-08: koniec tylko, gdy aktywność istnieje (stan natywny)
+        const d = decyzjaAktywnosci({ zdarzenie: 'menu_zakoncz', aktywna: z.liveActivity.aktywna(), systemWlaczone: true, ostatniaZmianaMs: null, teraz: z.zegar.teraz().ms, koniecPoMs: LIVE_KONIEC_PO_MS });
+        if (d === 'zakoncz') await z.liveActivity.zakoncz();
+      },
+      async stoperTrwa(projektId) {
+        try { return (await z.baza.all("SELECT 1 AS t FROM sesja WHERE projekt_id = ? AND stan = 'trwa' LIMIT 1", [projektId])).length > 0; } catch { return false; }
+      },
     },
     konflikt: {
       async kandydaci() {
@@ -236,7 +246,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
       const przed = (await stan()).w?.wartosc;
       const r = await wpiszWartosc(z, { licznikId, wartosc });
       if (!r.ok) return ekranu(r);
-      await k.poZmianie();
+      await k.poZmianie('liczenie');
       const { w } = await stan();
       return { ok: true, wartosc: { wejscieWPrzypomnienie: w && przed !== undefined ? wejscie(w, przed) : null, wibracje: o.wibracje() } };
     },
@@ -276,7 +286,7 @@ export function kompozycjaLicznika(z: ZaleznosciKompozycji, j: Jezyk, o: OpcjeKo
         const r = await odejmijRzad(z, { licznikId });
         if (!r.ok) return ekranu(r);
         baner = null;
-        void stan().then(({ w }) => poZapisie(w));
+        void stan().then(({ w }) => poZapisie(w, 'liczenie'));
         return { ok: true, wartosc: { skonczone: r.wartosc.wartosc } };
       },
       async naCofnijSerie() {

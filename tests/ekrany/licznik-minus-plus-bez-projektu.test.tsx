@@ -15,7 +15,7 @@ import { przygotuj } from '../dane/pomocnicze/srodowisko';
 import type { Tlumacz } from '../../src/ekrany/wspolne';
 import { atrapaHaptyki } from './pomoc';
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
 
 async function start(straznikOknoS?: number) {

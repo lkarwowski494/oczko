@@ -115,7 +115,7 @@ describe('render w trybie zrzutów', () => {
     expect(screen.queryByText(/^touch: /)).toBeNull();
   });
 
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
   test('ekran licznika: licznik działa, bez paneli wejść, nawigacji, pomiaru i zegarka', async () => {
     mockUzyjPrawdziwego.tak = true;

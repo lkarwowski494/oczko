@@ -16,9 +16,11 @@ async function srodowisko(katalog?: string) {
   const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
   const j: Jezyk = { t: i.t, jezyk: i.jezyk, zegar24h: () => true };
   const zdarzenia: string[] = [];
+  let aktywna = false; // stan natywny (ADR-0037 (2)): start ustawia, koniec zeruje
   const liveActivity: LiveActivity = {
-    start: async (x: StanEkranuBlokady) => { zdarzenia.push(`start:${x.wartosc}`); return { ok: true, wartosc: undefined }; },
-    aktualizuj: async (x) => { zdarzenia.push(`aktualizuj:${x.wartosc}`); }, zakoncz: async () => { zdarzenia.push('zakoncz'); },
+    start: async (x: StanEkranuBlokady) => { aktywna = true; zdarzenia.push(`start:${x.wartosc}`); return { ok: true, wartosc: undefined }; },
+    aktualizuj: async (x) => { zdarzenia.push(`aktualizuj:${x.wartosc}`); }, zakoncz: async () => { aktywna = false; zdarzenia.push('zakoncz'); },
+    aktywna: () => aktywna,
   };
   const zegarek: Zegarek = { potwierdz: (ids) => { zdarzenia.push(`potwierdz:${ids.join(',')}`); }, wyslijStan: async (x) => { zdarzenia.push(`zegarek:${x.wartosc}`); }, odbieraj: () => () => undefined };
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, j);
@@ -37,11 +39,11 @@ describe('kompozycjaLicznika', () => {
     const st = await k.dzialania.odswiez!();
     expect([st.projekt, st.czesc, st.skonczone]).toEqual(['Counter from Oct 22, 12:00', null, 1]);
     await poKolejce();
-    expect(zdarzenia).toEqual(['aktualizuj:1', 'zegarek:1', 'start:1']);
+    expect(zdarzenia).toEqual(['start:1', 'zegarek:1']); // ADR-0037 (1): start przy liczeniu (+1), decyzja przed wysłaniem stanu do zegarka
     s.zegar.przesun(5_000);
     await k.uslugi.dodajRzad();
     await poKolejce();
-    expect(zdarzenia.slice(3)).toEqual(['aktualizuj:2', 'zegarek:2']); // Live Activity startuje raz na proces
+    expect(zdarzenia.slice(2)).toEqual(['aktualizuj:2', 'zegarek:2']); // drugi +1: aktywna (stan natywny) → aktualizacja, nie drugi start
   });
 
   test('F-49: restart (nowa kompozycja na tym samym pliku) → ten sam licznik; licznik w koszu → lista projektów', async () => {
@@ -101,7 +103,7 @@ describe('kompozycjaLicznika', () => {
     await k.otworz('l1');
     await k.uslugi.start();
     await poKolejce();
-    expect(zdarzenia).toEqual(['potwierdz:w1', 'aktualizuj:2', 'zegarek:2', 'start:2']);
+    expect(zdarzenia).toEqual(['potwierdz:w1', 'zegarek:2']); // ADR-0037 (1), AK-06: start aplikacji (odświeżenie) nie uruchamia Live Activity; zegarek dostaje stan zawsze
   });
 });
 

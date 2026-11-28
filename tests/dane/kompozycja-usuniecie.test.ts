@@ -12,7 +12,7 @@ async function srodowisko() {
   const s = await przygotuj();
   const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
   const j: Jezyk = { t: i.t, jezyk: i.jezyk, zegar24h: () => true };
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, j);
   await wykonaj(s.baza, [projekt('p1', 'Sweter'), czesc('c1', 'p1', 'Tył'), ...licznik('l1', 'c1', 3), czesc('c2', 'p1', 'Przód', 2), ...licznik('l2', 'c2', 1),

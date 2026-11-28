@@ -1,4 +1,4 @@
-// PU-Z09, PU-Z11 (katalog: „Oczekujące 1.0.2”). ZM-27 (KO-234, ADR-0037, P-1099): decyzja o Live Activity po zdarzeniu w aplikacji
+// PU-355, PU-357 (katalog: „Oczekujące 1.0.2”). ZM-27 (KO-234, ADR-0037, P-1099): decyzja o Live Activity po zdarzeniu w aplikacji
 // (start tylko przy liczeniu, odświeżenie nigdy nie startuje, koniec po LIVE_KONIEC_PO_MS bez liczenia, menu → zakończ) i `staleDate`.
 // Wyrocznia: wektory AK-01…AK-11 i SD-01…SD-04 roli 05 (docs/architektura/wektory-1-0-2.json). Miejsce (propozycja 07, P-1113):
 // `src/domena/aktywnosc.ts` z eksportami `decyzjaAktywnosci`, `dataNieaktualnosci`; parametr `LIVE_KONIEC_PO_MS` w src/konfiguracja.ts.

@@ -15,7 +15,7 @@ import { przygotuj, wykonaj } from '../dane/pomocnicze/srodowisko';
 test('PU-156: po każdym +1 stan zegarka (e2e-zegarek-stan) zawiera nazwę „Watch test” i bieżący rząd (2, potem 3)', async () => {
   const s = await przygotuj();
   const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek: zegarekSztuczny }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => false });
   await wykonaj(s.baza, [projekt('p1', 'Watch test'), czesc('c1', 'p1', 'Body'), ...licznik('l1', 'c1', 0)]);
   await k.otworz('l1');

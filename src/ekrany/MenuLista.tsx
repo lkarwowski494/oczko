@@ -59,14 +59,18 @@ export function MenuPlywajace(p: { children: React.ReactNode; testID?: string; p
   return <View style={[p.polozenie, st.plywajace, szerokosc]} testID={p.testID}>{zPodzialka(p.children, st.podzialka)}</View>;
 }
 
-/** Pozycja menu: cały wiersz jest celem dotyku (44), tekst `tresc` w `tekst`; `niszczacy` tylko dla działania nieodwracalnego; wyłączona — `przyciskNieaktywnyTekst`. */
-export function PozycjaMenu(p: { tekst: string; onPress(): void; testID?: string; etykieta?: string; podpowiedz?: string; wylaczony?: boolean; niszczacy?: boolean; plywajace?: boolean; children?: React.ReactNode }): React.ReactElement {
+/** Pozycja menu: cały wiersz jest celem dotyku (44), tekst `tresc` w `tekst`; `niszczacy` tylko dla działania nieodwracalnego; wyłączona — `przyciskNieaktywnyTekst`.
+ *  `podpis` (ZM-27 (b)): zdania `tresc2` pod tytułem (każde osobnym tekstem); etykieta VoiceOver = tytuł + podpis (design-spec 1.0.2). */
+export function PozycjaMenu(p: { tekst: string; onPress(): void; testID?: string; etykieta?: string; podpowiedz?: string; podpis?: readonly string[]; wylaczony?: boolean; niszczacy?: boolean; plywajace?: boolean; children?: React.ReactNode }): React.ReactElement {
   const k = useKolory();
   const st = style(k);
+  const tytul = <Text style={[st.tekst, p.niszczacy && { color: k.niszczacy }, p.wylaczony && { color: k.przyciskNieaktywnyTekst }]}>{p.tekst}</Text>;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? p.tekst} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
+    <Pressable accessibilityRole="button" accessibilityLabel={p.etykieta ?? (p.podpis?.length ? [p.tekst, ...p.podpis].join('. ') : p.tekst)} accessibilityHint={p.podpowiedz} onPress={p.onPress} testID={p.testID}
       disabled={p.wylaczony} accessibilityState={p.wylaczony ? { disabled: true } : undefined} style={[st.pozycja, p.plywajace && st.pozycjaPlywajaca]}>
-      <Text style={[st.tekst, p.niszczacy && { color: k.niszczacy }, p.wylaczony && { color: k.przyciskNieaktywnyTekst }]}>{p.tekst}</Text>
+      {p.podpis?.length
+        ? <View style={st.kolumnaTekstu}>{tytul}{p.podpis.map((z) => <Text key={z} style={st.podpis}>{z}</Text>)}</View>
+        : tytul}
       {p.children}
     </Pressable>
   );
@@ -87,6 +91,8 @@ function style(k: Kolory) {
     pozycja: { minHeight: m.arkusz.wysokoscPozycji, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', columnGap: odstep.s, paddingVertical: odstep.s, paddingHorizontal: odstep.l },
     pozycjaPlywajaca: { minHeight: m.plywajace.wysokoscPozycji },
     tekst: { ...typografia.tresc, color: k.tekst, flexShrink: 1 },
+    kolumnaTekstu: { flexShrink: 1, rowGap: odstep.xs },
+    podpis: { ...typografia.tresc2, color: k.tekst2 },
     plywajace: {
       marginTop: m.plywajace.odstepOdPaska, backgroundColor: kolor(k, m.plywajace.tlo), borderRadius: promien[m.plywajace.promien as 'lista'],
       boxShadow: `0px ${cien.przesuniecieY}px ${cien.rozmycie}px ${rgba(cien.kolor, cien.przezroczystosc)}`, zIndex: 2,

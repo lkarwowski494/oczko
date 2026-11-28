@@ -18,6 +18,7 @@ function atrapa(dostepne = true, rzuca = false) {
     liveStart: async (j: string, u: string) => { wywolania.push(['start', j, u]); if (rzuca) throw new Error('ActivityKit'); return 'a1'; },
     liveAktualizuj: async (j: string) => { wywolania.push(['aktualizuj', j]); if (rzuca) throw new Error('ActivityKit'); },
     liveZakoncz: async () => { wywolania.push(['zakoncz']); },
+    liveAktywna: () => !rzuca,
   };
 }
 
@@ -35,6 +36,23 @@ describe('LiveActivity na module Swift', () => {
   });
   test('aktualizuj przy błędzie modułu nie rzuca (dane już w bazie)', async () => {
     await expect(liveActivity('u', atrapa(true, true)).aktualizuj(stan)).resolves.toBeUndefined();
+  });
+});
+
+describe('ADR-0037: staleDate i stan natywny aktywności', () => {
+  test('start i aktualizuj przekazują staleDateMs do modułu (reguła 4); bez niego null (bez staleDate)', async () => {
+    const wywolania: unknown[][] = [];
+    const n = { ...atrapa(), liveStart: async (...a: unknown[]) => { wywolania.push(['start', ...a.slice(2)]); return 'a1'; }, liveAktualizuj: async (...a: unknown[]) => { wywolania.push(['aktualizuj', ...a.slice(1)]); } };
+    const la = liveActivity('u', n, () => 'en');
+    await la.start(stan, 1_794_345_000_000);
+    await la.aktualizuj(stan, 1_794_346_000_000);
+    await la.aktualizuj(stan);
+    expect(wywolania).toEqual([['start', 'en', 1_794_345_000_000], ['aktualizuj', 'en', 1_794_346_000_000], ['aktualizuj', 'en', null]]);
+  });
+  test('aktywna() czyta stan modułu (nie flagę w procesie); wyjątek modułu = brak aktywności (start przy najbliższym liczeniu)', () => {
+    expect(liveActivity('u', atrapa(true, false)).aktywna()).toBe(true);
+    expect(liveActivity('u', { ...atrapa(), liveAktywna: () => false }).aktywna()).toBe(false);
+    expect(liveActivity('u', { ...atrapa(), liveAktywna: () => { throw new Error('ActivityKit'); } }).aktywna()).toBe(false);
   });
 });
 
@@ -81,13 +99,14 @@ describe('P-139: język aplikacji do Live Activity i zegarka (teksty natywne w j
       liveStart: async (...a: unknown[]) => { wywolania.push(['start', ...a]); return 'a1'; },
       liveAktualizuj: async (...a: unknown[]) => { wywolania.push(['aktualizuj', ...a]); },
       liveZakoncz: async () => undefined,
+      liveAktywna: () => true,
     };
     const la = liveActivity('iphone-test', n, () => jezyk);
     await la.start(stan);
     jezyk = 'pt-BR';
     await la.aktualizuj(stan);
     await liveActivity('iphone-test', n).aktualizuj(stan);
-    expect(wywolania).toEqual([['start', JSON.stringify(stan), 'iphone-test', 'pl'], ['aktualizuj', JSON.stringify(stan), 'pt-BR'], ['aktualizuj', JSON.stringify(stan), null]]);
+    expect(wywolania).toEqual([['start', JSON.stringify(stan), 'iphone-test', 'pl', null], ['aktualizuj', JSON.stringify(stan), 'pt-BR', null], ['aktualizuj', JSON.stringify(stan), null, null]]);
   });
   test('zegarek: wyslijStan przekazuje język obok stanu i potwierdzonych (klucz `jezyk` kontekstu)', async () => {
     const wyslane: unknown[][] = [];

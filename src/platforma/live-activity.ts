@@ -5,22 +5,24 @@ import type { Wynik } from '../domena/bledy';
 import type { LiveActivity, StanEkranuBlokady } from '../domena/porty';
 import { natywny as modul, type OczkoDziennikPlusNatywny } from '../../modules/oczko-dziennik-plus';
 
-type Natywny = Pick<OczkoDziennikPlusNatywny, 'liveStart' | 'liveAktualizuj' | 'liveZakoncz' | 'liveDostepne'>;
+type Natywny = Pick<OczkoDziennikPlusNatywny, 'liveStart' | 'liveAktualizuj' | 'liveZakoncz' | 'liveDostepne' | 'liveAktywna'>;
 
 export function liveActivity(urzadzenie: string, natywny: Natywny = modul(), jezyk?: () => string): LiveActivity {
   const j = () => (jezyk ? jezyk() : null);
   return {
-    async start(s: StanEkranuBlokady): Promise<Wynik<void>> {
+    async start(s: StanEkranuBlokady, staleDateMs?: number | null): Promise<Wynik<void>> {
       if (!natywny.liveDostepne()) return { ok: false, powod: 'niedozwolone_przejscie' };
       try {
-        await natywny.liveStart(JSON.stringify(s), urzadzenie, j());
+        await natywny.liveStart(JSON.stringify(s), urzadzenie, j(), staleDateMs ?? null);
         return { ok: true, wartosc: undefined };
       } catch {
         return { ok: false, powod: 'zapis' };
       }
     },
     // Aktualizacja i koniec: błąd modułu nie przerywa zapisu w aplikacji (stan Live Activity to widok, dane są w bazie i dzienniku).
-    aktualizuj: (s) => natywny.liveAktualizuj(JSON.stringify(s), j()).catch(() => undefined),
+    aktualizuj: (s, staleDateMs) => natywny.liveAktualizuj(JSON.stringify(s), j(), staleDateMs ?? null).catch(() => undefined),
     zakoncz: () => natywny.liveZakoncz().catch(() => undefined),
+    // ADR-0037 reguła 2: stan z systemu, nie flaga; wyjątek modułu = brak aktywności (start przy najbliższym liczeniu)
+    aktywna: () => { try { return natywny.liveAktywna(); } catch { return false; } },
   };
 }

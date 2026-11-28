@@ -26,7 +26,7 @@ jest.mock('../../src/kompozycja/Kontekst', () => ({ useAplikacja: () => mockApp.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const EkranLicznika = (require('../../app/licznik') as { default: React.ComponentType }).default;
 
-const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
 const sklep = { produkty: jest.fn(async () => []), kup: jest.fn(), przywroc: jest.fn(), transakcje: jest.fn(async () => []), obserwuj: jest.fn(() => () => {}) } as unknown as Sklep;
 
 /** Trasa „/” na prawdziwej bazie: `seed` zakłada dane przed otwarciem ekranu; `z.zdarzenie(linie)` to zdarzenie z zegarka (granica platformy). */

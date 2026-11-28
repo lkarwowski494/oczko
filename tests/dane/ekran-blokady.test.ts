@@ -10,7 +10,7 @@ import { MIN, T0, przygotuj, wykonaj } from './pomocnicze/srodowisko';
 
 function cele() {
   const wyslane: { la: StanEkranuBlokady[]; zegarek: StanEkranuBlokady[]; zakonczono: number } = { la: [], zegarek: [], zakonczono: 0 };
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async (s) => { wyslane.la.push(s); }, zakoncz: async () => { wyslane.zakonczono++; } };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async (s) => { wyslane.la.push(s); }, zakoncz: async () => { wyslane.zakonczono++; }, aktywna: () => true };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async (s) => { wyslane.zegarek.push(s); }, odbieraj: () => () => undefined };
   return { wyslane, liveActivity, zegarek };
 }

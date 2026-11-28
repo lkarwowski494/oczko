@@ -19,7 +19,7 @@ async function kompozycjaTestowa(o: { katalog?: string } = {}) {
   const s = await przygotuj({ katalog: o.katalog });
   const i = await utworzI18n({ magazyn: { odczytaj: async () => null, zapisz: async () => {} }, systemowe: () => ['en-US'], zasoby: ZASOBY });
   const j: Jezyk = { t: i.t, jezyk: i.jezyk, zegar24h: () => true };
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async () => undefined, odbieraj: () => () => undefined };
   const k = kompozycjaLicznika({ ...s.z, migruj: (b) => migruj(b), liveActivity, zegarek }, j, { wibracje: () => true });
   return { s, k, j };

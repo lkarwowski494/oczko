@@ -21,7 +21,7 @@ async function stanPoZakupie(produkt: string) {
   await sklep.kup(produkt);
   await dostep.odswiez();
   const wyslane: StanEkranuBlokady[] = [];
-  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined };
+  const liveActivity: LiveActivity = { start: async () => ({ ok: true, wartosc: undefined }), aktualizuj: async () => undefined, zakoncz: async () => undefined, aktywna: () => false };
   const zegarek: Zegarek = { potwierdz: () => undefined, wyslijStan: async (st) => { wyslane.push(st); }, odbieraj: () => () => undefined };
   const k = kompozycjaLicznika({ ...s.z, pro: () => dostep.stan().pro, migruj: (b) => migruj(b), liveActivity, zegarek }, { t: i.t, jezyk: i.jezyk, zegar24h: () => true }, { wibracje: () => true, dostep });
   expect((await k.przygotuj()).ok).toBe(true);

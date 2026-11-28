@@ -2,10 +2,12 @@
 // zlecone wcześniej), potem ten sam ładunek do Live Activity i zegarka. Który licznik i jaka nazwa (projekt roboczy przez t(), P-126 (1b))
 // oraz dostęp (decyzja ADR-0010 z datą wygaśnięcia) podaje wołający — ekran, partia 4.
 import type { Wynik } from '../domena/bledy';
+import { decyzjaAktywnosci, dataNieaktualnosci, type ZdarzenieAktywnosci } from '../domena/aktywnosc';
+import { LIVE_KONIEC_PO_MS } from '../konfiguracja';
 import { startDnia } from '../domena/limit';
 import type { LiveActivity, StanEkranuBlokady, Zegarek } from '../domena/porty';
 import { stanEkranuBlokady } from '../domena/zegarek';
-import { licznikEkranuBlokady, przypomnieniaLicznika, startSesjiEkranu } from '../dane/repozytoria/ekran-blokady';
+import { licznikEkranuBlokady, ostatniaZmianaLicznika, przypomnieniaLicznika, startSesjiEkranu } from '../dane/repozytoria/ekran-blokady';
 import { dniLimituMiesiaca, ostatniPlus } from '../dane/repozytoria/liczniki';
 import { dodajDni } from './daty';
 import { blad, operacjaZapisu } from './zapis';
@@ -13,11 +15,20 @@ import type { Zaleznosci } from './zaleznosci';
 
 export type ZaleznosciEkranuBlokady = Zaleznosci & { liveActivity: LiveActivity; zegarek: Zegarek };
 
+/**
+ * ADR-0037 (KO-234, P-1099): `zdarzenie` mówi, co wywołało odświeżenie; `decyzjaAktywnosci` (czysta, wektory AK) wybiera start / aktualizację / koniec / nic
+ * na podstawie stanu natywnego `liveActivity.aktywna()`. Start tylko przy `liczenie` (odświeżenie nigdy nie wskrzesza aktywności); koniec po `LIVE_KONIEC_PO_MS`
+ * bez zmian i na `menu_zakoncz`/`reset`. Zegarek dostaje stan zawsze (ADR-0009, koniec Live Activity go nie dotyczy).
+ */
 export async function odswiezEkranBlokady(
   z: ZaleznosciEkranuBlokady,
-  w: { licznikId: string; nazwa: string; dostep: { pro: boolean; wygasa: number | null } },
+  w: { licznikId: string; nazwa: string; dostep: { pro: boolean; wygasa: number | null }; zdarzenie?: ZdarzenieAktywnosci },
 ): Promise<Wynik<StanEkranuBlokady>> {
+  let ostatniaZmianaMs: number | null = null;
+  let terazMs = 0;
   const stan = await operacjaZapisu(z, 'ekranBlokady', async (tx, teraz, chwila) => {
+    ostatniaZmianaMs = await ostatniaZmianaLicznika(tx, w.licznikId);
+    terazMs = teraz;
     const l = await licznikEkranuBlokady(tx, w.licznikId);
     if (!l) return blad('bledne_dane'); // licznik w koszu albo nieistniejący: zwykły stan, nie błąd diagnostyki
     const dni = await dniLimituMiesiaca(tx, chwila.dzien.slice(0, 7));
@@ -41,7 +52,11 @@ export async function odswiezEkranBlokady(
     if (stan.powod === 'bledne_dane') await z.liveActivity.zakoncz();
     return stan;
   }
-  await z.liveActivity.aktualizuj(stan.wartosc);
+  const decyzja = decyzjaAktywnosci({ zdarzenie: w.zdarzenie ?? 'odswiezenie', aktywna: z.liveActivity.aktywna(), systemWlaczone: true, ostatniaZmianaMs, teraz: terazMs, koniecPoMs: LIVE_KONIEC_PO_MS });
+  const stale = dataNieaktualnosci({ ostatniaZmianaMs, przypominaczMs: null, koniecPoMs: LIVE_KONIEC_PO_MS }); // przypominacz U7 forma A działa w aplikacji; staleDate = koniec po czasie (ADR-0037 (4))
+  if (decyzja === 'start') await z.liveActivity.start(stan.wartosc, stale);
+  else if (decyzja === 'aktualizuj') await z.liveActivity.aktualizuj(stan.wartosc, stale);
+  else if (decyzja === 'zakoncz') await z.liveActivity.zakoncz();
   await z.zegarek.wyslijStan(stan.wartosc);
   return stan;
 }
