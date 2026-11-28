@@ -84,7 +84,7 @@ func etykietaPlus(_ a: StanAktywnosci) -> String {
 struct SmartStack: View {
   let a: StanAktywnosci
   var body: some View {
-    let s = a.stan, j = a.jezyk, n = String(rzadWRobocie(s))
+    let s = a.stan, j = a.jezyk
     VStack(alignment: .leading, spacing: 4) {
       HStack(alignment: .firstTextBaseline, spacing: 4) {
         Image(systemName: "number").font(.system(size: 13)).foregroundStyle(Color("tekst")).accessibilityHidden(true) // znak kresek: zasób jak w compact (zgłoszenie partii 4)
