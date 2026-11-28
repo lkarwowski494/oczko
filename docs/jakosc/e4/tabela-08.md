@@ -469,6 +469,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-notatki-odrzuc.test.tsx` | zielony (główny zestaw) | 7 | BR-WZR-003 | `src/przypadki-uzycia/wzor-widok` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-ostrzezenie-miejsca-113.test.ts` | zielony (główny zestaw) | 5 | — | `src/dane/pliki/system`<br>`src/kompozycja/wzor-rysunki`<br>`src/konfiguracja` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-panel-notatek-e2e-bx15.test.tsx` | zielony (główny zestaw) | 3 | BR-WZR-003, P-238 | `src/przypadki-uzycia/wzor-widok` | — |
+| 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-panel-rozjazdu-zakreslen-za1.test.tsx` | zielony (główny zestaw) | 3 | P-238 | `src/kompozycja/e2e/rozjazd-zakreslen-stan` | — |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-dzianina.test.tsx` | zielony (główny zestaw) | 12 | P-614 | `src/domena/uklad`<br>`src/ekrany/WzorLicznik`<br>`src/ekrany/WzorPrzegladarka`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-ipad.test.tsx` | zielony (główny zestaw) | 4 | P-605 | `src/ekrany/WzorLicznik`<br>`src/ekrany/motyw`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/ekrany/wzor-pasek-plus-203-204.test.tsx` | zielony (główny zestaw) | 6 | BR-LIC-020 | `src/ekrany/Licznik`<br>`src/kompozycja/preferencje` | Z07-22 |
@@ -527,8 +528,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/widok-wzoru-kontrakt.test.ts` | zielony (główny zestaw) | 8 | P-360 | `src/domena/rysik` | — |
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
+| 9 ? | `tests/adaptery/xctest-krok-minus-1-0-2.test.ts` | zielony (główny zestaw) | 3 | — | `src/przypadki-uzycia/ekran-blokady` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/konfiguracja`<br>`src/platforma/zdjecia` | — |
-| 9 ? | `tests/akceptacja/kontrole/zm22-zm24-xctest.test.ts` | oczekuje | 3 | — | `src/przypadki-uzycia/ekran-blokady` | — |
 | 9 ? | `tests/domena/co-dalej.test.ts` | zielony (główny zestaw) | 5 | RD-13 | `src/domena/co-dalej` | — |
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
 | 9 ? | `tests/domena/icloud/wektory-swift.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie`<br>`src/domena/porty` | Z07-22 |
@@ -553,4 +554,4 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/zm25-podpowiedz-termin.test.ts` | zielony (główny zestaw) | 4 | — | `src/domena/podpowiedz` | — |
 | 9 ? | `tests/domena/zm27-aktywnosc.test.ts` | zielony (główny zestaw) | 3 | — | `src/konfiguracja` | — |
 
-Razem plików testów: 549; zależnych od poprawek: 342.
+Razem plików testów: 550; zależnych od poprawek: 342.
