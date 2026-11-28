@@ -5,7 +5,8 @@ import ExpoModulesCore
 import Foundation
 
 public class OczkoDziennikPlusModule: Module {
-  static func data(_ ms: Int64?) -> Date? { ms.map { Date(timeIntervalSince1970: Double($0) / 1000) } }
+  // Liczba z JS jest Double (expo-modules-core 57.0.23, `DynamicNumberType.cast`: `jsValue.getDouble()`); `Double?` omija zaokrąglenie i pułapkę `Int64(NaN/∞)`. Wartość nieskończona albo NaN = bez `staleDate` (FB2, P3 recenzji FB1).
+  static func data(_ ms: Double?) -> Date? { ms.flatMap { $0.isFinite ? Date(timeIntervalSince1970: $0 / 1000) : nil } }
 
   public func definition() -> ModuleDefinition {
     Name("OczkoDziennikPlus")
@@ -16,13 +17,13 @@ public class OczkoDziennikPlusModule: Module {
     // Każda aktualizacja z JS czyści `uwaga` (ADR-0008, 2026-10-26); `jezyk` = język aplikacji (P-139), nil = angielski.
     // `staleDateMs` (ADR-0037 reguła 4): ostatnia zmiana + min(próg przypominacza, koniec), liczy go TS (`dataNieaktualnosci`, SD-01…SD-04); nil = bez `staleDate`.
     // Argument końcowy opcjonalny: wywołanie z 3 argumentami (adapter sprzed 1.0.2) dalej działa (expo-modules-core: trailing optional).
-    AsyncFunction("liveStart") { (stanJson: String, urzadzenie: String, jezyk: String?, staleDateMs: Int64?) async throws -> String in
+    AsyncFunction("liveStart") { (stanJson: String, urzadzenie: String, jezyk: String?, staleDateMs: Double?) async throws -> String in
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
       for a in Activity<OczkoAtrybuty>.activities { await a.end(nil, dismissalPolicy: .immediate) } // jedna sesja na ekranie blokady
       let a = try Activity<OczkoAtrybuty>.request(attributes: OczkoAtrybuty(urzadzenie: urzadzenie), content: ActivityContent(state: stan, staleDate: Self.data(staleDateMs)), pushType: nil)
       return a.id
     }
-    AsyncFunction("liveAktualizuj") { (stanJson: String, jezyk: String?, staleDateMs: Int64?) async throws in
+    AsyncFunction("liveAktualizuj") { (stanJson: String, jezyk: String?, staleDateMs: Double?) async throws in
       let stan = StanAktywnosci(stan: try StanEkranuBlokady.dekoduj(Data(stanJson.utf8)), uwaga: nil, jezyk: jezyk)
       for a in Activity<OczkoAtrybuty>.activities { await a.update(ActivityContent(state: stan, staleDate: Self.data(staleDateMs))) }
     }
