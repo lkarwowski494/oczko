@@ -105,9 +105,40 @@ export async function zdarzeniaDoScalenia(tx: PortBazy, licznikId: string): Prom
   });
 }
 /** Treść zapisanego zdarzenia do porównania przy ponownym dostarczeniu (idempotencja po UUID, M-02; inna treść = kolizja, M-14). */
-export async function trescZdarzenia(tx: PortBazy, id: string): Promise<{ licznikId: string; rodzaj: string; rodzice: string[] } | null> {
-  const [w] = await wiersze(tx.all('SELECT licznik_id, rodzaj, rodzice FROM zdarzenie WHERE id = ?', [id]), 'trescZdarzenia');
-  return w ? { licznikId: tekst(w, 'licznik_id'), rodzaj: tekst(w, 'rodzaj'), rodzice: listaTekstow(w, 'rodzice') } : null;
+export async function trescZdarzenia(tx: PortBazy, id: string): Promise<{ licznikId: string; rodzaj: string; rodzice: string[]; czasMs: number; urzadzenie: string; zrodlo: string } | null> {
+  const [w] = await wiersze(tx.all('SELECT licznik_id, rodzaj, rodzice, czas_ms, urzadzenie, zrodlo FROM zdarzenie WHERE id = ?', [id]), 'trescZdarzenia');
+  return w ? { licznikId: tekst(w, 'licznik_id'), rodzaj: tekst(w, 'rodzaj'), rodzice: listaTekstow(w, 'rodzice'), czasMs: liczba(w, 'czas_ms'), urzadzenie: tekst(w, 'urzadzenie'), zrodlo: tekst(w, 'zrodlo') } : null;
+}
+/** Głowy grafu licznika (zdarzenia bez dziecka); wołane tylko przy rodzicu linii innym niż bieżąca głowa (przesunięcie rodzica, ADR-0035). */
+export async function glowyLicznika(tx: PortBazy, licznikId: string): Promise<string[]> {
+  const w = await wiersze(tx.all(
+    `SELECT z.id FROM zdarzenie z WHERE z.licznik_id = ?
+       AND NOT EXISTS (SELECT 1 FROM zdarzenie c, json_each(c.rodzice) j WHERE c.licznik_id = z.licznik_id AND j.value = z.id)`, [licznikId]), 'glowyLicznika');
+  return w.map((r) => tekst(r, 'id'));
+}
+/**
+ * Zdarzenia od rodzica (wyłącznie) do głowy (włącznie): przodkowie głowy po wszystkich rodzicach, bez rodzica i jego przodków (ADR-0035 reguła 4).
+ * `poRodzicu` = null, gdy rodzic nie jest przodkiem głowy; `obcieto`, gdy przejście przekroczyło `maks` zdarzeń.
+ */
+export async function zdarzeniaPoRodzicu(tx: PortBazy, glowa: string, rodzic: string, maks: number): Promise<{ poRodzicu: { rodzaj: string; czasMs: number }[] | null; obcieto: boolean }> {
+  const odwiedzone = new Set<string>([rodzic]);
+  const kolejka = [glowa];
+  const wynik: { rodzaj: string; czasMs: number }[] = [];
+  let doszlismy = glowa === rodzic;
+  while (kolejka.length > 0) {
+    const id = kolejka.shift() ?? '';
+    if (odwiedzone.has(id)) continue;
+    odwiedzone.add(id);
+    if (wynik.length >= maks) return { poRodzicu: wynik, obcieto: true };
+    const [w] = await wiersze(tx.all('SELECT rodzaj, czas_ms, rodzice FROM zdarzenie WHERE id = ?', [id]), 'zdarzeniaPoRodzicu');
+    if (!w) continue;
+    wynik.push({ rodzaj: tekst(w, 'rodzaj'), czasMs: liczba(w, 'czas_ms') });
+    for (const r of listaTekstow(w, 'rodzice')) {
+      if (r === rodzic) doszlismy = true;
+      else kolejka.push(r);
+    }
+  }
+  return { poRodzicu: doszlismy ? wynik : null, obcieto: false };
 }
 /** Poprzednie +1 przed chwilą `przedMs` (wejście `ostatniPlus` przy scaleniu zdarzeń z opóźnieniem, ADR-0008 (6)). */
 export async function ostatniPlusPrzed(tx: PortBazy, odDnia: string, przedMs: number): Promise<number | null> {

@@ -1,12 +1,12 @@
-// PU-Z06, PU-Z07 (katalog: „Oczekujące 1.0.2”). ZM-20 (U2, ADR-0035, P-1096): scalenie dziennika ekranu blokady/zegarka na nieaktualnej
+// PU-352 (ex PU-Z06), PU-Z07 (katalog: „Oczekujące 1.0.2”). ZM-20 (U2, ADR-0035, P-1096): scalenie dziennika ekranu blokady/zegarka na nieaktualnej
 // głowie — linia ±1 dostaje rodzica = bieżąca głowa, gdy zmiany po jej rodzicu są przemienne (suma, bez konfliktu); wpisanie po stuknięciu
 // → konflikt pokazany (PU-099), nic nie znika. Wyrocznia: scenariusze SC-01…SC-06 roli 05 (docs/architektura/wektory-1-0-2.json; wartości
 // z niezależnego prototypu `scal` z E1). Ścieżka: `scalDziennik` (src/przypadki-uzycia/dziennik.ts) na `node:sqlite`, jak tests/dane/dziennik-poczekalnia-ekranu.test.ts.
-import wektory from '../../../docs/architektura/wektory-1-0-2.json';
-import type { ZdarzenieWejsciowe } from '../../../src/domena/porty';
-import { scalDziennik } from '../../../src/przypadki-uzycia/dziennik';
-import { czesc, projekt, zdarzenie, type Instr } from '../../dane/pomocnicze/dane-wejsciowe';
-import { T0, ile, jeden, przygotuj, wykonaj } from '../../dane/pomocnicze/srodowisko';
+import wektory from '../../docs/architektura/wektory-1-0-2.json';
+import type { ZdarzenieWejsciowe } from '../../src/domena/porty';
+import { scalDziennik } from '../../src/przypadki-uzycia/dziennik';
+import { czesc, projekt, zdarzenie, type Instr } from './pomocnicze/dane-wejsciowe';
+import { T0, ile, jeden, przygotuj, wykonaj } from './pomocnicze/srodowisko';
 
 type Ev = { id: string; rodzaj: string; czasMs: number; rodzice: string[]; wartosc?: number; zrodlo: string };
 type SC = { id: string; opis: string; baza: Ev[]; linie: Ev[]; oczekiwane: { decyzje: Record<string, string>; rodzice: Record<string, string[]>; stan: 'zgodny' | 'konflikt'; wartosc?: number; kandydaci?: Record<string, number> } };
@@ -34,7 +34,7 @@ const rodzice = async (s: Awaited<ReturnType<typeof przygotuj>>, id: string) => 
 
 describe('ZM-20 scalenie dziennika na nieaktualnej głowie (ADR-0035)', () => {
   for (const sc of SCENARIUSZE.filter((x) => x.oczekiwane.stan === 'zgodny')) {
-    test(`ZM-20 ${sc.id} PU-Z06: ${sc.opis}`, async () => {
+    test(`ZM-20 ${sc.id} PU-352: ${sc.opis}`, async () => {
       const s = await zeScenariusza(sc);
       s.dziennik.linie.push(...sc.linie.map(linia));
       await scalDziennik(s.z);

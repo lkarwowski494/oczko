@@ -5,12 +5,13 @@
 import type { Wynik } from '../domena/bledy';
 import { startDnia, wolaStraznika } from '../domena/limit';
 import type { PortBazy, WynikPartii, ZdarzenieWejsciowe } from '../domena/porty';
-import { PARTIA_SYNCHRONIZACJI, POCZEKALNIA_EKRANU_MS } from '../konfiguracja';
+import { przesuniecieRodzica } from '../domena/przesuniecie';
+import { DZIENNIK_PRZESUNIECIE_MAKS, PARTIA_SYNCHRONIZACJI, POCZEKALNIA_EKRANU_MS } from '../konfiguracja';
 import { parsujDziennik } from '../dane/dziennik';
 import { zapiszBladW } from '../dane/repozytoria/bledy';
 import { zapiszUstawienie } from '../dane/repozytoria/ustawienia';
 import {
-  dniLimituMiesiaca, dopiszZdarzenie, ostatniPlusPrzed, poczekalnia, poczekalniaEkranu, przyszloPoczekalni, rodzicZastapiony, stanLicznika, trescZdarzenia, usunZPoczekalni, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie,
+  dniLimituMiesiaca, dopiszZdarzenie, glowyLicznika, ostatniPlusPrzed, poczekalnia, poczekalniaEkranu, przyszloPoczekalni, rodzicZastapiony, stanLicznika, trescZdarzenia, usunZPoczekalni, zapiszDzienLimitu, zapiszOstatniaPrace, zdarzenie, zdarzeniaPoRodzicu,
 } from '../dane/repozytoria/liczniki';
 import { dodajDni } from './daty';
 import { wKolejce } from './kolejka';
@@ -37,8 +38,10 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     }
     const byl = await trescZdarzenia(tx, l.id);
     if (byl) { // powtórzone dostarczenie (M-02) albo kolizja id (M-14)
-      // Linia z ekranu blokady mogła dostać innego rodzica po progu poczekalni (P-1080): jej rodzice nie są kolizją id.
-      const innyRodzic = JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice) && !(l.zrodlo === 'ekran_blokady' && await rodzicZastapiony(tx, l.id));
+      // ADR-0035 reguła 7: linia przesunięta (U2) albo zastąpiona (P-1080) ma w bazie innego rodzica niż w dostawie; to nie kolizja, gdy
+      // zgadzają się licznik, rodzaj, czas, urządzenie i źródło (różnić się wolno tylko rodzicom; ślad w `blad` znika po `przytnijBledy`).
+      const innyRodzic = JSON.stringify(byl.rodzice) !== JSON.stringify(l.rodzice)
+        && !((l.zrodlo === 'ekran_blokady' || l.zrodlo === 'zegarek') && byl.czasMs === l.czasMs && byl.urzadzenie === l.urzadzenie && byl.zrodlo === l.zrodlo);
       if (byl.licznikId !== l.licznikId || byl.rodzaj !== l.rodzaj || innyRodzic) {
         await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_kolizja_id', szczegoly: { zdarzenie: l.id } });
       }
@@ -48,6 +51,7 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
     }
     let lRodzice = l.rodzice;
     let rodzice = await Promise.all(lRodzice.map((r) => zdarzenie(tx, r)));
+    let zastapiony = false;
     if (rodzice.some((r) => r === null)) { // rodzic jeszcze nie dotarł: poczekalnia (ADR-0005, P-110 Q1a)
       // EB1 (P-1079): linia z ekranu blokady czeka najwyżej POCZEKALNIA_EKRANU_MS (24 h od pierwszego przyjścia; jeden powrót z tła to 2 scalenia, więc nie liczymy wywołań); potem dołącza do bieżącej głowy licznika, żeby rząd policzony
       // na ekranie blokady nie zniknął na stałe (wartość = głowa + 1; konflikt z rozwidleniem pokazuje scal jak dla każdej innej linii).
@@ -64,6 +68,20 @@ async function scalLinie(tx: PortBazy, linie: readonly ZdarzenieWejsciowe[], ter
         continue;
       }
       await zapiszBladW(tx, { czasMs: terazMs, kod: 'dziennik_rodzic_zastapiony', szczegoly: { zdarzenie: l.id, licznik: l.licznikId } });
+      zastapiony = true;
+    }
+    if (!zastapiony && lRodzice.length === 1) { // U2 (ZM-20, ADR-0035): ±1 z ekranu blokady albo zegarka na nieaktualnej głowie → bieżąca głowa, gdy zmiany po rodzicu są przemienne
+      const rodzic = lRodzice[0] ?? '';
+      const glowaTeraz = ostatnie.get(l.licznikId) ?? s.glowa;
+      if (glowaTeraz !== null && rodzic !== glowaTeraz && (l.zrodlo === 'ekran_blokady' || l.zrodlo === 'zegarek')) { // tylko przy innym rodzicu: bez zapytań w zwykłym łańcuchu
+        const glowy = await glowyLicznika(tx, l.licznikId);
+        const po = glowy.length === 1 && glowy[0] !== undefined ? await zdarzeniaPoRodzicu(tx, glowy[0], rodzic, DZIENNIK_PRZESUNIECIE_MAKS) : { poRodzicu: null, obcieto: false };
+        const d = przesuniecieRodzica({ linia: { rodzaj: l.rodzaj, czasMs: l.czasMs, zrodlo: l.zrodlo, rodzic }, glowy, poRodzicu: po.poRodzicu, obcieto: po.obcieto });
+        if (d.decyzja === 'przesun' && d.rodzic !== null) {
+          lRodzice = [d.rodzic];
+          rodzice = [await zdarzenie(tx, d.rodzic)];
+        }
+      }
     }
     const przed = rodzice[0]?.wartoscPo ?? 0;
     await dopiszZdarzenie(tx, {

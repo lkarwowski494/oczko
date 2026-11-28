@@ -36,7 +36,6 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wektory-dostepu.test.ts` | zielony (główny zestaw) | 5 | BR-ZAK-001, BR-ZAK-003, BR-ZAK-007, KP-02, KP-05, KP-06, KP-08, P-038, P-057, P-089, R-109 | `src/domena/dostep`<br>`src/konfiguracja` | — |
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wektory-limitu.test.ts` | zielony (główny zestaw) | 7 | BR-ZAK-005, BR-ZAK-006, KP-12, KP-13, NFR-PIE-001, P-057, P-065, P-067, P-068, R-097, R-103, R-178 | `src/domena/limit`<br>`src/konfiguracja` | Z07-07 |
 | 1 domena: limit, dostęp, informacje o Pro | `tests/domena/zakup/wlasnosci.test.ts` | zielony (główny zestaw) | 14 | KP-02, KP-06, KP-12, KP-13, KP-15, P-057, P-065, R-099, R-102, R-113 | `src/domena/dostep`<br>`src/domena/limit`<br>`src/konfiguracja` | Z07-07 |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/akceptacja/dane/zm20-scalenie-dziennika.test.ts` | oczekuje | 3 | — | `src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/akceptacja/dane/zm21-znaczenie-nowego-licznika.test.ts` | oczekuje | 4 | — | `src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/akceptacja/dane/zm24-dodaj-rzad-krok.test.ts` | oczekuje | 4 | — | `src/przypadki-uzycia/licznik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/akceptacja/dane/zm24-migracja-0002.test.ts` | oczekuje | 4 | R-075 | `src/dane/baza/adapter-node`<br>`src/dane/migracje/migruj` | Z07-22 |
@@ -52,11 +51,11 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-limit-sklepu.test.ts` | zielony (główny zestaw) | 5 | KP-06, P-396 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dostep-pro.test.ts` | zielony (główny zestaw) | 4 | KP-06, P-103 | `src/kompozycja/dostep`<br>`src/konfiguracja`<br>`src/platforma/sklep-sztuczny` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-blad.test.ts` | zielony (główny zestaw) | 2 | R-024 | `src/dane/dziennik`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-poczekalnia-ekranu.test.ts` | zielony (główny zestaw) | 10 | — | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-poczekalnia-ekranu.test.ts` | zielony (główny zestaw) | 11 | — | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-pro.test.ts` | zielony (główny zestaw) | 5 | P-103, P-111 | `src/dane/dziennik`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-sklejenie.test.ts` | zielony (główny zestaw) | 4 | P-123, P-124, R-022, R-023 | `src/dane/dziennik`<br>`src/domena/porty` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik-skroc-blad.test.ts` | zielony (główny zestaw) | 1 | R-022 | `src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
-| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik.test.ts` | zielony (główny zestaw) | 5 | NFR-DAN-003, R-020, R-021 | `src/dane/dziennik`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/start` | Z07-11, Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dziennik.test.ts` | zielony (główny zestaw) | 6 | NFR-DAN-003, R-020, R-021 | `src/dane/dziennik`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/start` | Z07-11, Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/dzis-kompozycja.test.ts` | zielony (główny zestaw) | 3 | P-563, RD-13, RD-20 | `src/i18n/i18n`<br>`src/i18n/slowniki`<br>`src/kompozycja/dzis`<br>`src/kompozycja/licznik` | — |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/ekran-blokady.test.ts` | zielony (główny zestaw) | 3 | P-135 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/przypadki-uzycia/ekran-blokady`<br>`src/przypadki-uzycia/licznik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/icloud-dwa-urzadzenia.test.ts` | zielony (główny zestaw) | 26 | BR-DAN-002, BR-DAN-002/S1, BR-DAN-002/S3, NFR-DAN-003, P-110, P-220, P-440, P-442, P-444 | `src/dane/repozytoria/icloud`<br>`src/domena/icloud/kontrakt`<br>`src/domena/porty`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/projekt`<br>`src/przypadki-uzycia/synchronizacja` | Z07-22 |
@@ -157,6 +156,7 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-kontakt.test.ts` | zielony (główny zestaw) | 4 | BR-DAN-011, P-193, P-195, P-199 | `src/dane/baza/przeniesienie`<br>`src/dane/repozytoria/ustawienia`<br>`src/domena/porty`<br>`src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/start` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zegarek-potwierdzenia.test.ts` | zielony (główny zestaw) | 6 | P-135, P-139, R-021 | `src/domena/porty`<br>`src/konfiguracja`<br>`src/platforma/zegarek`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zgloszenie-ekran-blokady.test.ts` | zielony (główny zestaw) | 2 | NFR-DAN-003, NFR-PRY-001 | `src/przypadki-uzycia/dziennik`<br>`src/przypadki-uzycia/licznik`<br>`src/przypadki-uzycia/zgloszenie` | Z07-22 |
+| 2 dane: port bazy, migracje, repozytoria, archiwum, kopie | `tests/dane/zm20-scalenie-dziennika.test.ts` | zielony (główny zestaw) | 3 | — | `src/domena/porty`<br>`src/przypadki-uzycia/dziennik` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm23-zrealizuj-kod.test.tsx` | oczekuje | 2 | P-315 | `src/ekrany/Oferty` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm24-krok-i-podpowiedz.test.tsx` | oczekuje | 7 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/Licznik`<br>`src/ekrany/MenuProjektu`<br>`src/ekrany/wspolne` | Z07-22 |
 | 4 ekrany (po adapterach platformy, krok 3) | `tests/akceptacja/ekrany/zm26-zm28-podpowiedzi.test.tsx` | oczekuje | 2 | — | `src/ekrany/FormularzeProjektu`<br>`src/ekrany/WzorGrupa`<br>`src/ekrany/wspolne` | Z07-22 |
@@ -522,9 +522,6 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/adaptery/wybor-pliku-wzoru.test.ts` | zielony (główny zestaw) | 2 | P-353 | `src/platforma/system-plikow-uzytkownika` | — |
 | 9 ? | `tests/adaptery/wzor-adapter.test.ts` | zielony (główny zestaw) | 7 | P-285 | `src/platforma/wzor` | — |
 | 9 ? | `tests/adaptery/zdjecia.test.ts` | zielony (główny zestaw) | 4 | P-191, P-218 | `src/konfiguracja`<br>`src/platforma/zdjecia` | — |
-| 9 ? | `tests/akceptacja/domena/zm20-przesuniecie-rodzica.test.ts` | oczekuje | 3 | PR-01, PR-18 | `src/konfiguracja` | — |
-| 9 ? | `tests/akceptacja/domena/zm24-stukniecia.test.ts` | oczekuje | 5 | BR-LIC-011, RD-12, RD-17 | `src/domena/straznik-tempa` | — |
-| 9 ? | `tests/akceptacja/domena/zm27-aktywnosc.test.ts` | oczekuje | 3 | — | `src/konfiguracja` | — |
 | 9 ? | `tests/akceptacja/kontrole/zm22-zm24-xctest.test.ts` | oczekuje | 3 | — | `src/przypadki-uzycia/ekran-blokady` | — |
 | 9 ? | `tests/domena/co-dalej.test.ts` | zielony (główny zestaw) | 5 | RD-13 | `src/domena/co-dalej` | — |
 | 9 ? | `tests/domena/icloud/icloud-odwzorowanie.test.ts` | zielony (główny zestaw) | 11 | P-221, P-274 | `src/domena/icloud/kontrakt`<br>`src/domena/icloud/odwzorowanie` | — |
@@ -545,5 +542,8 @@ Wygenerowano: `node docs/jakosc/narzedzia/tabela-08.mjs --wynik docs/jakosc/e4/t
 | 9 ? | `tests/domena/wzor/uklad-rysik.test.ts` | zielony (główny zestaw) | 13 | BR-WZR-004, BR-WZR-008, P-218, P-220, P-225, P-226, P-327, P-360, P-614 | `src/domena/rysik`<br>`src/domena/uklad` | — |
 | 9 ? | `tests/domena/wzor/znacznik-ustawianie.test.ts` | zielony (główny zestaw) | 4 | BR-WZR-003 | `src/domena/znacznik-wzoru` | Z07-22 |
 | 9 ? | `tests/domena/zapas/linia-zapasu.test.ts` | zielony (główny zestaw) | 2 | BR-ZAP-002, P-126 | `src/domena/zapas` | — |
+| 9 ? | `tests/domena/zm20-przesuniecie-rodzica.test.ts` | zielony (główny zestaw) | 3 | PR-01, PR-18 | `src/konfiguracja` | — |
+| 9 ? | `tests/domena/zm24-stukniecia.test.ts` | zielony (główny zestaw) | 5 | BR-LIC-011, RD-12, RD-17 | `src/domena/straznik-tempa` | — |
+| 9 ? | `tests/domena/zm27-aktywnosc.test.ts` | zielony (główny zestaw) | 3 | — | `src/konfiguracja` | — |
 
 Razem plików testów: 542; zależnych od poprawek: 337.
