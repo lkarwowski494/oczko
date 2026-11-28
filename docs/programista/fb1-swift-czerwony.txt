@@ -21,3 +21,9 @@ IntencjaKrokMinusTests.swift:56: error: IntencjaKrokMinusTests.testWektoryIntenc
 Test Case 'IntencjaKrokMinusTests.testWektoryIntencji' failed (0.006 seconds)
 	 Executed 3 tests, with 14 failures (0 unexpected) in 0.015 (0.015) seconds
 ```
+
+## Krok 2: dopisz wielu linii (D-04, jeden write) i haptyka PS
+```
+DziennikTests.swift:170: error: DziennikTests.testKrokDwieLinieJednymZapisem : XCTAssertEqual failed: ("2") is not equal to ("1") - dwie linie = jeden write
+KrokZegarekTests.swift:57: error: KrokZegarekTests.testHaptykaPrzySkoku : XCTAssertEqual failed: ("Optional(OczkoDziennik.WzorzecHaptykiZegarka.plus)") is not equal to ("Optional(OczkoDziennik.WzorzecHaptykiZegarka.przypomnienie)") - 46 → 48: rząd w robocie 47 → 49 przeskakuje 48 = od 12 + 6 · 6 (PS-01)
+```
