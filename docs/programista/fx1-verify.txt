@@ -1,0 +1,8 @@
+FX1 (08 fix, KO-246) — podsumowanie i kody, 2026-11-28
+gałąź: claude/ms1-scalenie-1-0-2-2026-11-28 (start 83d557af)
+P2-1 tests/dane/fx1-krok-icloud.test.ts: czerwony (zmieniono_ms przesunięte) -> zielony
+P2-2 tests/ekrany/fx1-podpowiedz-odliczanie.test.tsx: czerwony 3/3 -> zielony
+P2-3 tests/dane/fx1-podpowiedz-odczyt.test.ts: czerwony (2 odczyty) -> zielony (<= 1)
+P3   tests/dane/fx1-live-activity-start.test.ts: czerwony (start,start) -> zielony (start,aktualizuj)
+npm run verify: kod 0 (typecheck, typecheck:testy, lint, jakosc:kontrole, jest: 777 zestawów, 8607 testów, 0 porażek)
+decyzje: P-1143, P-1144, P-1145 (docs/decyzje.md)
