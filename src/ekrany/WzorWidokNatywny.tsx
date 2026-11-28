@@ -11,6 +11,7 @@ import type { Uklad } from '../domena/uklad';
 import type { Aplikacja } from '../kompozycja/Kontekst';
 import type { Kontener } from '../kompozycja/kontener';
 import { zglosBladZapisu } from '../kompozycja/po-zapisie';
+import { diagnostykaE2e } from '../platforma/tryb-e2e';
 import type { WidokLicznika } from '../przypadki-uzycia/widok-licznika';
 import { zapiszRysunek } from '../przypadki-uzycia/wzor';
 import { zapamietajPozycjeWzoru } from '../przypadki-uzycia/wzor-miejsce';
@@ -49,6 +50,16 @@ export type ParametryWidokuNatywnego = {
   postaw: (w: { strona: number; y: number; rzadBazowy: number; kierunek: 1 | -1; wysokoscRzedu?: number }) => Promise<unknown>;
 };
 
+/**
+ * ZA1 (PU-008, KO-244): diagnostyka rozjazdu płótna z danymi tylko w buildzie E2E (`diagnostykaE2e`, panel `e2e-wzor-rozjazdy`). Stan żyje tu, nie w trasie (`app/wzor.tsx` jest przy limicie 20 KB);
+ * w wydaniu `diagnostykaE2e` = null i nic się nie rysuje poza widokiem natywnym.
+ */
+function ZDiagnostykaRozjazdu({ widok }: { widok: (zglos: (r: { rozjazdy: number; ostatni: string }) => void) => React.ReactElement }): React.ReactElement {
+  const [r, ustaw] = React.useState({ rozjazdy: 0, ostatni: '' });
+  const zglos = (n: { rozjazdy: number; ostatni: string }): void => ustaw((p) => (p.rozjazdy === n.rozjazdy && p.ostatni === n.ostatni ? p : n));
+  return <>{widok(zglos)}{diagnostykaE2e && <diagnostykaE2e.PanelRozjazduZakreslen rozjazd={r} />}</>;
+}
+
 export function widokNatywnyWzoru(p: ParametryWidokuNatywnego): React.ReactElement {
   const { t, aplikacja, zw, widok, lw, dokument, uklad, postaw } = p;
   const zn = widok.znacznik;
@@ -57,8 +68,9 @@ export function widokNatywnyWzoru(p: ParametryWidokuNatywnego): React.ReactEleme
     return { id: String(c.rzad), strona: c.strona, y: c.y, wysokosc: c.wysokosc, etykieta, a11y: t('wzor.notatka_chip_a11y', { n: c.rzadWzoru, tekst: c.notatki.length > 1 ? etykieta : (c.notatki[0]?.tekst ?? '') }) };
   });
   if (!WidokWzoruNatywny || !dokument) return <View style={{ flex: 1 }} />;
-  return (
-    <WidokWzoruNatywny ref={p.uchwyt} style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={p.katalogRysunkow} strona={p.strona ? p.strona.n - 1 : p.startStrona} narzedzie={p.narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={p.polityka} cofnij={p.cofnij} notatki={notatkiNatywne}
+  const Natywny = WidokWzoruNatywny; // zawężenie typu nie przechodzi do domknięcia niżej
+  return <ZDiagnostykaRozjazdu widok={(zglosRozjazd) => (
+    <Natywny ref={p.uchwyt} style={{ flex: 1 }} testID="wzor-pdf" dokument={dokument} katalogRysunkow={p.katalogRysunkow} strona={p.strona ? p.strona.n - 1 : p.startStrona} narzedzie={p.narzedzie} narzedzieRysika={narzedzieRysika(uklad.klasa)} polityka={p.polityka} cofnij={p.cofnij} notatki={notatkiNatywne}
       onNotatka={(e) => p.ustawOtwartyChip(Number(e.nativeEvent.id))}
       onZnacznik={(e) => { const n = e.nativeEvent; if (zn && n.wzorId === widok.wzorId) void postaw({ strona: n.strona, y: n.y, wysokoscRzedu: n.wysokosc, rzadBazowy: Math.max(1, zn.rzad), kierunek: zn.kierunek }); }}
       onZnacznikKrok={(e) => { const n = e.nativeEvent; const k = zn && n.wzorId === widok.wzorId ? krokZnacznika(zn, n.delta) : null; if (zn && k) void postaw({ strona: zn.strona, y: k.y, rzadBazowy: k.rzadBazowy, kierunek: zn.kierunek }); }}
@@ -72,7 +84,7 @@ export function widokNatywnyWzoru(p: ParametryWidokuNatywnego): React.ReactEleme
       onStrona={(e) => { p.ustawStrone({ n: e.nativeEvent.strona + 1, razem: e.nativeEvent.stron }); void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, strona: e.nativeEvent.strona }); }} // zapis pozycji: nieudany zostaje we wpisie błędów (operacjaZapisu), wzór dalej działa
       onPowiekszenie={(e) => { if (e.nativeEvent.wzorId === widok.wzorId) void zapamietajPozycjeWzoru(zw, { licznikId: lw.licznikId, wzorId: widok.wzorId, powiekszenie: e.nativeEvent.powiekszenie }); }}
       onPierwszyRysik={() => { const po = poPierwszymRysiku({ narzedzie: p.narzedzie, tylkoRysik: p.tylkoRysik }, uklad.klasa); p.ustawNarzedzie(po.narzedzie); p.ustawRysik({ tylkoRysik: po.tylkoRysik }); }} // P-327 (a), P-360: bez narzędzia Pen (compact: Highlighter)
-      onZakreslenia={(e) => p.ustawZakreslenia(e.nativeEvent.liczba)}
+      onZakreslenia={(e) => { p.ustawZakreslenia(e.nativeEvent.liczba); zglosRozjazd({ rozjazdy: e.nativeEvent.rozjazdy ?? 0, ostatni: e.nativeEvent.ostatni ?? '' }); }}
       onStukniecie={(e) => { // przytrzymanie: pas staje w tym miejscu, rząd zostaje (S3); pierwszy znacznik pyta o kierunek (3a) i bierze rząd w robocie (S2)
         const n = e.nativeEvent;
         if (n.wzorId !== widok.wzorId) return;
@@ -81,5 +93,5 @@ export function widokNatywnyWzoru(p: ParametryWidokuNatywnego): React.ReactEleme
         if (zn) void postaw({ strona: n.strona, y: gornaKrawedzRzedu(n.y, zn.wysokosc), rzadBazowy: rzadPoPrzeniesieniu(zn, domyslnyRzadBazowy(lw.wartosc)), kierunek: zn.kierunek });
         else p.ustawPrzytrzymanie({ strona: n.strona, y: n.y });
       }} />
-  );
+  )} />;
 }

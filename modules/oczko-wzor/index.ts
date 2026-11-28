@@ -51,7 +51,7 @@ export type PropsWidokuNatywnego = {
   onStrona?: (e: NativeSyntheticEvent<{ strona: number; stron: number }>) => void;
   onPowiekszenie?: (e: NativeSyntheticEvent<{ wzorId: string; powiekszenie: number }>) => void; // po zmianie powiększenia (z opóźnieniem); powiekszenie = scaleFactor / dopasowanie do szerokości, 1 = dopasowany
   onPierwszyRysik?: (e: NativeSyntheticEvent<Record<string, never>>) => void;                  // P-218 Q2a
-  onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number }>) => void;                       // kreski zakreślacza na wszystkich stronach
+  onZakreslenia?: (e: NativeSyntheticEvent<{ liczba: number; rozjazdy?: number; ostatni?: string }>) => void; // kreski zakreślacza na wszystkich stronach; ZA1: rozjazdy = ile razy płótno miało inną liczbę kresek niż dane (diagnostyka E2E), ostatni = opis ostatniego
 };
 
 /** Funkcje widoku (ref; Expo `AsyncFunction` w `View(WidokWzoru.self)`, kolejka główna). M1-112: zapis rysunków bez czekania na zegar → liczba stron

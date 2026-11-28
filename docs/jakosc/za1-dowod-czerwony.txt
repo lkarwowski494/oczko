@@ -1,0 +1,6 @@
+  ● ZA1 (PU-008): rozjazd płótna z danymi po cofnięciu jest wykrywany, zgłaszany i naprawiany tylko przy rozjeździe › cofnięcie planuje sprawdzenie płótna strony po zmianie danych i zapisu (w następnym obiegu pętli)
+  ● ZA1 (PU-008): rozjazd płótna z danymi po cofnięciu jest wykrywany, zgłaszany i naprawiany tylko przy rozjeździe › sprawdzenie po cofnięciu: przypisanie płótnu `rysunki[s]` (zKodu) tylko w gałęzi „liczba kresek płótna ≠ danych” i nie w trakcie pociągnięcia
+  ● ZA1 (PU-008): rozjazd płótna z danymi po cofnięciu jest wykrywany, zgłaszany i naprawiany tylko przy rozjeździe › nowe pociągnięcie: więcej niż jedna nowa kreska w jednym zdarzeniu → dane = stare kreski + ostatnia, rozjazd zgłoszony, płótno naprawione; historia dostaje stan sprzed pociągnięcia
+  ● ZA1 (PU-008): rozjazd płótna z danymi po cofnięciu jest wykrywany, zgłaszany i naprawiany tylko przy rozjeździe › naprawa płótna: poza pociągnięciem (strona w użyciu czeka krótko, z limitem prób), przypisanie bez zdarzenia zmiany (zKodu)
+  ● ZA1 (PU-008): rozjazd płótna z danymi po cofnięciu jest wykrywany, zgłaszany i naprawiany tylko przy rozjeździe › zdarzenie diagnostyczne: licznik rozjazdów i opis ostatniego idą z `onZakreslenia`, liczba kresek bez zmiany
+Tests:       7 failed, 1 passed, 8 total
