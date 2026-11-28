@@ -6,6 +6,10 @@
 import { join } from 'node:path';
 import wektory from '../../../docs/architektura/wektory-1-0-2.json';
 import { eksportLubZnacznik, modulLubZnacznik, rozpakuj } from '../../narzedzia/akceptacja';
+import type { Seria } from '../../../src/domena/straznik-tempa';
+
+/** Dzisiejszy strażnik RD-17 liczy serie zdarzeń (`serieDoSprawdzenia`); 08-A przełącza wołającego na serie stuknięć (tabela 07 → 08: plik do zmiany). */
+export type SeriaZdarzenDzis = Seria;
 
 type Zdarzenie = { id: string; rodzaj: string; czasMs: number; rodzice: string[]; zrodlo: string; urzadzenie: string; cofa?: string[] };
 type Stukniecie = { ids: string[]; krok: number; czasMs: number; zrodlo: string; rodzaj: string };

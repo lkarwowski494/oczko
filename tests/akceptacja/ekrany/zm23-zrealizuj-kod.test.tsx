@@ -6,6 +6,10 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { tEn } from '../../ekrany/pomoc';
+import type { PropsOfert } from '../../../src/ekrany/Oferty';
+
+/** Ekran do zmiany (przycisk „Redeem code”, komunikat bez sieci) — dla tabeli 07 → 08. */
+export type PropsOfertDzis = PropsOfert;
 
 jest.mock('expo-router', () => ({ useRouter: () => ({ back: jest.fn() }), useLocalSearchParams: () => ({}) }));
 jest.mock('../../../src/kompozycja/system', () => ({ systemAplikacji: { zarzadzajSubskrypcja: jest.fn(), otworzAdres: jest.fn() } }));

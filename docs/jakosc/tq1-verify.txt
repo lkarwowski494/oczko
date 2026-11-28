@@ -1,0 +1,5 @@
+# TQ1 — npm run verify (2026-11-28, gałąź claude/tq1-testy-1-0-2-2026-11-28, drzewo przed commitem końcowym)
+Test Suites: 751 passed, 751 total
+Tests:       8452 passed, 8452 total
+kod wyjścia: 0
+test:akceptacja: Razem 96: asercja 25, znacznik 70, zielony-ok 1; błędy raportu: 0. kod 0

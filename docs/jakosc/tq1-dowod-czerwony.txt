@@ -1,0 +1,19 @@
+# TQ1 — dowód: testy przed kodem 1.0.2 czerwone z właściwego powodu i rozróżniające (2026-11-28, baza 9275460e)
+
+## npm run test:akceptacja (kod 0)
+Razem 96: asercja 25, znacznik 70, zielony-ok 1; błędy raportu: 0.
+
+## Kopia w worktree (scratchpad, cofnięta): prototyp 05 (docs/architektura/eksperymenty/1-0-2/prototyp.mjs) jako src/domena/{przesuniecie,stukniecia,aktywnosc}.ts + 2 parametry w src/konfiguracja.ts
+- prototyp 05 jako implementacja: Tests: 62 passed, 62 total
+- mutant M1 (przesuniecie: <= → <): ✕ ZM-20 PR-17: wpisanie w tej samej ms co stuknięcie: ≤ (linia po nim) (4 ms)
+- mutant M1 (przesuniecie: <= → <): Tests: 1 failed, 19 passed, 20 total
+- mutant M2 (stuknięcie bez limitu kroku: < → <=): ✕ ZM-24 ST-03: trzy plus w tej samej ms: najwyżej KROK_MAKS w stuknięciu (3 ms)
+- mutant M2 (stuknięcie bez limitu kroku: < → <=): Tests: 1 failed, 25 passed, 26 total
+- mutant M3 (koniec po czasie: >= → >): ✕ ZM-27 AK-04: odświeżenie po 2 h bez zmian → zakończ (koniec przy najbliższej okazji aplikacji) (3 ms)
+- mutant M3 (koniec po czasie: >= → >): Tests: 1 failed, 15 passed, 16 total
+- mutant M4 (zgodność iCloud: drugie zdarzenie „+2” rozwidla historię zamiast łańcucha): ✕ A: +1 ×2 i jedno „+2” (dwa plus, ten sam czas) → B (kod odbioru sprzed 1.0.2) po odbiorze: 4, bez konfliktu i poczekalni (85 ms)
+- mutant M4 (zgodność iCloud: drugie zdarzenie „+2” rozwidla historię zamiast łańcucha): - "konflikt": 0,
+- mutant M4 (zgodność iCloud: drugie zdarzenie „+2” rozwidla historię zamiast łańcucha): + "konflikt": 1,
+- mutant M4 (zgodność iCloud: drugie zdarzenie „+2” rozwidla historię zamiast łańcucha): Tests: 1 failed, 1 passed, 2 total
+
+Wniosek: testy domeny są spełnialne implementacją zgodną z ADR (62/62) i każdy mutant granicy pada na asercji wektora. Kod aplikacji w drzewie commitu nietknięty (git diff 9275460e..HEAD -- src app modules targets: pusty).

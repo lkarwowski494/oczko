@@ -1,0 +1,3 @@
+# TQ1 — stan (rola 07 fix, 2026-11-28; KO-237)
+- Gałąź `claude/tq1-testy-1-0-2-2026-11-28` od 9275460e. Zadania 1–4 polecenia TQ1 zrobione: katalog PU (F PU-346…PU-351, oczekujące PU-Z01…PU-Z11, 7 zmienionych, „Przegląd” od 1241), testy przed kodem (96, raport kod 0), lista dla 08 `docs/jakosc/tq1-1-0-2.md`, decyzje P-1113…P-1116, verify `docs/jakosc/tq1-verify.txt`.
+- Otwarte (koordynator): weto P-1113…P-1116; sesje 08-A, 08-B, 08-KO-234 według `docs/jakosc/tq1-1-0-2.md`; prototyp B (08) → PU formy B2 U7 i karty zwiniętej ZM-27 (07 po wyniku); przed buildem 1.0.2: sekcja „Oczekujące 1.0.2” pusta, protokół F `--szkielet <n>`, linia „Przegląd: build <n> @ <sha>”.

@@ -4,6 +4,10 @@
 // Wynik `swift test` sprawdza bramka iOS, nie ten test (w kontenerze Linux brak Swift).
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import type { ZaleznosciEkranuBlokady } from '../../../src/przypadki-uzycia/ekran-blokady';
+
+/** Strona TS składa stan v3 dla Live Activity i zegarka — 08-B/08-A dopisują pole `krok` (ADR-0036 kontrakt Swift pkt 1); dla tabeli 07 → 08. */
+export type ZaleznosciEkranuBlokadyDzis = ZaleznosciEkranuBlokady;
 
 const KATALOG = join(__dirname, '../../../modules/oczko-reguly/Tests/OczkoRegulyTests');
 const tresc = () => readdirSync(KATALOG).filter((f) => f.endsWith('.swift')).map((f) => readFileSync(join(KATALOG, f), 'utf8')).join('\n');
