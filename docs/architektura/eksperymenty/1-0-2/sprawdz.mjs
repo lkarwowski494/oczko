@@ -65,6 +65,8 @@ function bledy(f) {
       && r.linie.every((l) => l.czasMs === v.opcje.teraz);
     if (!ok) b.push(`${v.id}: ${JSON.stringify({ wynik: r.wynik, rodzice: r.linie.map((l) => l.rodzice), stan: r.stan })}`);
   }
+  for (const v of W.aktywnosc) { const r = f.decyzjaAktywnosci(v.wejscie); if (r !== v.oczekiwane) b.push(`${v.id}: ${r}`); }
+  for (const v of W.data_nieaktualnosci) { const r = f.dataNieaktualnosci(v.wejscie); if (r !== v.oczekiwane) b.push(`${v.id}: ${r}`); }
   return b;
 }
 
@@ -82,6 +84,10 @@ const MUTANTY = {
   'przypomnienie: tylko pas po': { przypomnienieSkoku: (a, b, p) => { const w = b + 1; return b > a && w >= p.od && (w - p.od) % p.co === 0 && (w - p.od) / p.co < p.razy ? w : null; } },
   '−1 przestawia dzień (stan sprzed U4)': { stuknijKrok: (r, k, s, o) => { const x = P.stuknijKrok(r, k, s, o); return r === 'minus' && x.wynik === 'zapisz' ? { ...x, stan: { ...x.stan, dzien: o.dzis, dzienDozwolony: true } } : x; } },
   'krok: limit sprawdzany per zdarzenie (drugie odrzucone)': { stuknijKrok: (r, k, s, o) => { const x = P.stuknijKrok(r, k, s, o); return x.linie.length > 1 ? { ...x, linie: x.linie.slice(0, 1), stan: { ...x.stan, wartosc: s.wartosc + 1, glowa: x.linie[0].id } } : x; } },
+  'odświeżenie wskrzesza (dzisiejszy start przy każdym zapisie)': { decyzjaAktywnosci: (w) => (w.zdarzenie === 'odswiezenie' && !w.aktywna && w.systemWlaczone ? 'start' : P.decyzjaAktywnosci(w)) },
+  'koniec: > zamiast >=': { decyzjaAktywnosci: (w) => P.decyzjaAktywnosci({ ...w, teraz: w.teraz - 1 }) },
+  'staleDate: zawsze koniec': { dataNieaktualnosci: (w) => P.dataNieaktualnosci({ ...w, przypominaczMs: null }) },
+  'staleDate: przypominacz bez min': { dataNieaktualnosci: (w) => (w.ostatniaZmianaMs === null ? null : w.ostatniaZmianaMs + (w.przypominaczMs ?? w.koniecPoMs)) },
   'krok: wspólny rodzic linii': { stuknijKrok: (r, k, s, o) => { const x = P.stuknijKrok(r, k, s, o); return { ...x, linie: x.linie.map((l) => ({ ...l, rodzice: s.glowa ? [s.glowa] : [] })) }; } },
 };
 

@@ -1,5 +1,5 @@
 {
- "opis": "Wektory 1.0.2 (rola 05 fix AR1, 2026-11-28): U2 przesunięcie rodzica linii dziennika (PR, SC; ADR-0035), U4 −1 z ekranu blokady (IN-04…IN-09; ADR-0035), U6 krok „+2” (ST, SE, CO, SK, PS, IN-01…IN-03, IN-10; ADR-0036). Wartości oczekiwane z reguł ADR, nie z kodu. Prototyp i kontrola: docs/architektura/eksperymenty/1-0-2/. TS (src/domena) i Swift (OczkoReguly/OczkoDziennik) czytają ten sam plik.",
+ "opis": "Wektory 1.0.2 (rola 05 fix AR1, 2026-11-28): U2 przesunięcie rodzica linii dziennika (PR, SC; ADR-0035), U4 −1 z ekranu blokady (IN-04…IN-09; ADR-0035), U6 krok „+2” (ST, SE, CO, SK, PS, IN-01…IN-03, IN-10; ADR-0036). KO-234 cykl życia Live Activity (AK, SD; ADR-0037). Wartości oczekiwane z reguł ADR, nie z kodu. Prototyp i kontrola: docs/architektura/eksperymenty/1-0-2/. TS (src/domena) i Swift (OczkoReguly/OczkoDziennik) czytają ten sam plik.",
  "wersja": 1,
  "przesuniecie": [
   {
@@ -1916,6 +1916,193 @@
      "glowa": "i1"
     }
    }
+  }
+ ],
+ "aktywnosc": [
+  {
+   "id": "AK-01",
+   "opis": "liczenie bez aktywnej → start",
+   "wejscie": {
+    "zdarzenie": "liczenie",
+    "aktywna": false,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 1000,
+    "teraz": 1000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "start"
+  },
+  {
+   "id": "AK-02",
+   "opis": "liczenie przy aktywnej → aktualizuj",
+   "wejscie": {
+    "zdarzenie": "liczenie",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 1000,
+    "teraz": 1000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "aktualizuj"
+  },
+  {
+   "id": "AK-03",
+   "opis": "liczenie, Live Activities wyłączone w Ustawieniach → nic",
+   "wejscie": {
+    "zdarzenie": "liczenie",
+    "aktywna": false,
+    "systemWlaczone": false,
+    "ostatniaZmianaMs": 1000,
+    "teraz": 1000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "nic"
+  },
+  {
+   "id": "AK-04",
+   "opis": "odświeżenie po 2 h bez zmian → zakończ (koniec przy najbliższej okazji aplikacji)",
+   "wejscie": {
+    "zdarzenie": "odswiezenie",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 7200000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "zakoncz"
+  },
+  {
+   "id": "AK-05",
+   "opis": "odświeżenie 1 ms przed progiem → aktualizuj",
+   "wejscie": {
+    "zdarzenie": "odswiezenie",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 7199999,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "aktualizuj"
+  },
+  {
+   "id": "AK-06",
+   "opis": "odświeżenie bez aktywnej (koniec z menu, po 8 h albo przez system) → nic: otwarcie aplikacji nie wskrzesza",
+   "wejscie": {
+    "zdarzenie": "odswiezenie",
+    "aktywna": false,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 10,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "nic"
+  },
+  {
+   "id": "AK-07",
+   "opis": "menu „zakończ” przy aktywnej",
+   "wejscie": {
+    "zdarzenie": "menu_zakoncz",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 10,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "zakoncz"
+  },
+  {
+   "id": "AK-08",
+   "opis": "menu „zakończ” bez aktywnej",
+   "wejscie": {
+    "zdarzenie": "menu_zakoncz",
+    "aktywna": false,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 10,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "nic"
+  },
+  {
+   "id": "AK-09",
+   "opis": "po zakończeniu następne liczenie uruchamia znowu",
+   "wejscie": {
+    "zdarzenie": "liczenie",
+    "aktywna": false,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 36000000,
+    "teraz": 36000000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "start"
+  },
+  {
+   "id": "AK-10",
+   "opis": "licznik bez zdarzeń przy odświeżeniu → zakończ",
+   "wejscie": {
+    "zdarzenie": "odswiezenie",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": null,
+    "teraz": 10,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "zakoncz"
+  },
+  {
+   "id": "AK-11",
+   "opis": "reset jak dziś",
+   "wejscie": {
+    "zdarzenie": "reset",
+    "aktywna": true,
+    "systemWlaczone": true,
+    "ostatniaZmianaMs": 0,
+    "teraz": 10,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": "zakoncz"
+  }
+ ],
+ "data_nieaktualnosci": [
+  {
+   "id": "SD-01",
+   "opis": "przypominacz wyłączony → staleDate = zmiana + koniec",
+   "wejscie": {
+    "ostatniaZmianaMs": 1000,
+    "przypominaczMs": null,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": 7201000
+  },
+  {
+   "id": "SD-02",
+   "opis": "przypominacz 10 min → wcześniejszy próg",
+   "wejscie": {
+    "ostatniaZmianaMs": 1000,
+    "przypominaczMs": 600000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": 601000
+  },
+  {
+   "id": "SD-03",
+   "opis": "przypominacz dłuższy niż koniec → koniec",
+   "wejscie": {
+    "ostatniaZmianaMs": 1000,
+    "przypominaczMs": 21600000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": 7201000
+  },
+  {
+   "id": "SD-04",
+   "opis": "brak zmian → bez staleDate",
+   "wejscie": {
+    "ostatniaZmianaMs": null,
+    "przypominaczMs": 600000,
+    "koniecPoMs": 7200000
+   },
+   "oczekiwane": null
   }
  ]
 }

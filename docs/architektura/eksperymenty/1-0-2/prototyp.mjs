@@ -118,3 +118,23 @@ export function stuknijKrok(rodzaj, krok, stan, { teraz, dzis, ids, limitOdmawia
   for (let k = 0; k < krok; k += 1) { linie.push({ id: ids[k], rodzaj: 'plus', rodzice: glowa ? [glowa] : [], czasMs: teraz, dzien: dzis }); glowa = ids[k]; }
   return { wynik: 'zapisz', linie, stan: { ...stan, wartosc: stan.wartosc + krok, glowa, ostatniPlusMs: teraz, dzien: dzis, dzienDozwolony: true } };
 }
+
+/**
+ * KO-234 (ADR-0037): decyzja o Live Activity po zdarzeniu w aplikacji. `aktywna` = natywnie (Activity.activities niepuste), nie flaga w pamięci.
+ * zdarzenie: 'liczenie' (zmiana wartości w aplikacji) | 'odswiezenie' (start, powrót na pierwszy plan, scalenie, data, Pro, język, inny licznik)
+ *          | 'menu_zakoncz' (pozycja menu licznika) | 'reset' (zerowanie widoku, błędne dane — jak dziś).
+ * Wynik: 'start' | 'aktualizuj' | 'zakoncz' | 'nic'. Odświeżenie nigdy nie uruchamia Live Activity (inaczej otwarcie aplikacji cofałoby koniec).
+ */
+export function decyzjaAktywnosci({ zdarzenie, aktywna, systemWlaczone, ostatniaZmianaMs, teraz, koniecPoMs }) {
+  if (zdarzenie === 'reset') return aktywna ? 'zakoncz' : 'nic';
+  if (zdarzenie === 'menu_zakoncz') return aktywna ? 'zakoncz' : 'nic';
+  if (zdarzenie === 'liczenie') return aktywna ? 'aktualizuj' : systemWlaczone ? 'start' : 'nic';
+  if (!aktywna) return 'nic';
+  return ostatniaZmianaMs === null || teraz - ostatniaZmianaMs >= koniecPoMs ? 'zakoncz' : 'aktualizuj';
+}
+
+/** KO-234 + U7-B: jedna `staleDate` na treść — wcześniejszy z progów (przypominacz włączony < koniec). null przy braku zmian. */
+export function dataNieaktualnosci({ ostatniaZmianaMs, przypominaczMs, koniecPoMs }) {
+  if (ostatniaZmianaMs === null) return null;
+  return ostatniaZmianaMs + (przypominaczMs === null ? koniecPoMs : Math.min(przypominaczMs, koniecPoMs));
+}
