@@ -169,7 +169,8 @@ export function ustawKrok(z: Zaleznosci, w: { licznikId: string; krok: 1 | 2 }):
   return wKolejce(z.baza, async () => {
     const teraz = z.zegar.teraz();
     try {
-      const r = await z.baza.transakcja(async (tx) => tx.run('UPDATE licznik SET krok = ?, zmieniono_ms = ? WHERE id = ? AND usunieto_ms IS NULL', [w.krok, teraz.ms, w.licznikId]));
+      // Bez `zmieniono_ms`: kolumna jest w wyzwalaczu licznik_icloud_u, a `krok` jest lokalny (0002.sql); nowszy czas wysłałby stary wiersz licznika i wygrałby LWW z nazwą zmienioną na innym urządzeniu (FX1 P2-1).
+      const r = await z.baza.transakcja(async (tx) => tx.run('UPDATE licznik SET krok = ? WHERE id = ? AND usunieto_ms IS NULL', [w.krok, w.licznikId]));
       return r.zmiany === 1 ? { ok: true as const, wartosc: undefined } : blad('bledne_dane');
     } catch (e) {
       await zapiszBlad(z.baza, { czasMs: teraz.ms, kod: 'zapis_licznika', szczegoly: { operacja: 'ustawKrok', sqlite: kodBledu(e) } });
