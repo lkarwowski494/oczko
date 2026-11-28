@@ -47,6 +47,8 @@ Czy widok Live Activity przerysuje się w chwili `staleDate`, gdy aplikacja jest
 
 **Rekomendacja dla 03/04 (P-1092):** A+B jako jedna funkcja, włącznik w ustawieniach licznika domyślnie wyłączony (P-046: nic nowego na ekranie licznika bez ustawienia użytkownika), próg stały do wyboru z krótkiej listy (wartości [DO WYJAŚNIENIA] (OP-36), parametr produktowy; próg z własnego tempa odrzucony na start: na początku projektu nie ma tempa, a zachowanie byłoby nieprzewidywalne [OCENA]), najwyżej jedno przypomnienie na rząd. C na liście odcięć z warunkiem powrotu: ≥3 prośby o wibrację/powiadomienie w recenzjach albo wynik testu F, że A+B nie wystarcza. Zegarek: bez osobnej pracy (bez sesji treningowej nie wolno wibrować z tła, S-52).
 
+**Stan po ZK1 (2026-11-28):** rola 03 przyjęła formę A+B do 1.0.2 jako ZM-25 (P-1091); bezpiecznik: gdy prototyp 05/08 nie potwierdzi B (OP-35), B przechodzi na 1.0.3, a 1.0.2 = samo A; C na liście odcięć (`docs/zakres-1-0-2.md`).
+
 ## U8: „check” — ile oczek powinno być w rzędzie
 ### Praca i dowody
 - Praca: J-02 (oczka w rzędzie), J-04 (wzór), J-09. Sygnał 1.0.2: 1 osoba.
