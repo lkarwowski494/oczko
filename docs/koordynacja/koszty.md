@@ -188,3 +188,4 @@ Przegląd 28.11 11:35: sesje opus (ZK1 6,61, RS1 8,33, PR1 9,37, AR1 13,20) — 
 | FB2 | 08 fix | 5 | 2,27 | 22 | 13:23 → 13:23 → 13:28 → verify sesji 13:36 → 13:40 | 0 | poprawki recenzji + KO-241 |
 | ZA1 | 08 fix | 4 | 3,16 | 26 | 13:25 → 13:25 → pytanie 13:28 → 13:45 → 13:50 | 0 | PU-008 diagnostyka + obrona |
 | FA2 | 08 build | 8 | 10,35 | 52 | 13:25 → 13:25 → 13:40 → verify sesji 14:28 → 14:32 | 0 | TS cz. 2 |
+| MS1+FX1 | 08 fix | 5+4 | 3,51 | 26 | 14:33 → 14:33 → 14:50 → 15:12 → 15:15 | 0 | scalenie + poprawki recenzji |
