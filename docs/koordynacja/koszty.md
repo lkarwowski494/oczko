@@ -172,3 +172,4 @@ Przegląd przepływu 2026-11-10 (14:00): koszt doby ok. 225,6 USD (od 9.11 18:45
 | DG2 | 07 audit | 3 | 2,31 | 29 | 13:57 → 13:58 → 14:09 → verify sesji 14:10 → 14:15 | 0 | diagnoza e2e cz. 2 i 4 |
 | EB1 | 08 fix | 6 | 4,06 | 28 | 21:56 → 21:57 → 22:28 → verify sesji 22:30 → 22:50 (+ poprawki recenzji) | 0 | ekran blokady: poczekalnia, diagnostyka, inactive |
 | DG3 | 07 audit | 3 | 2,53 | 30 | 04:56 → 04:57 → 05:14 → verify sesji 05:15 → 05:20 | 0 | diagnoza e2e main i integracji |
+| KA1 | 08 fix | 3 | 1,48 | 18 | 09:31 → 09:33 → 09:45 → verify sesji 09:45 (+ poprawki recenzji 09:56) → 10:00 | 0 | klasyfikator awarii maszyny bez junit (P-1084/1085) |
