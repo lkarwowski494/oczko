@@ -1,0 +1,23 @@
+# FB1 08-B — dowód czerwieni (swift test, Swift 6.0.3 Linux, 2026-11-28, HEAD ddfa6ff1 + IntencjaKrokMinusTests)
+
+```
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.011 (0.011) seconds
+IntencjaKrokMinusTests.swift:107: error: IntencjaKrokMinusTests.testDataNieaktualnosci : XCTAssertEqual failed: ("nil") is not equal to ("Optional(7201000)") - SD-01
+IntencjaKrokMinusTests.swift:107: error: IntencjaKrokMinusTests.testDataNieaktualnosci : XCTAssertEqual failed: ("nil") is not equal to ("Optional(601000)") - SD-02
+IntencjaKrokMinusTests.swift:107: error: IntencjaKrokMinusTests.testDataNieaktualnosci : XCTAssertEqual failed: ("nil") is not equal to ("Optional(7201000)") - SD-03
+Test Case 'IntencjaKrokMinusTests.testDataNieaktualnosci' failed (0.005 seconds)
+IntencjaKrokMinusTests.swift:92: error: IntencjaKrokMinusTests.testPrzypomnienieSkoku : XCTAssertEqual failed: ("nil") is not equal to ("Optional(10)") - PS-01
+IntencjaKrokMinusTests.swift:92: error: IntencjaKrokMinusTests.testPrzypomnienieSkoku : XCTAssertEqual failed: ("nil") is not equal to ("Optional(15)") - PS-03
+IntencjaKrokMinusTests.swift:92: error: IntencjaKrokMinusTests.testPrzypomnienieSkoku : XCTAssertEqual failed: ("nil") is not equal to ("Optional(20)") - PS-05
+Test Case 'IntencjaKrokMinusTests.testPrzypomnienieSkoku' failed (0.005 seconds)
+IntencjaKrokMinusTests.swift:63: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("[["g"]]") is not equal to ("[["g"], ["i1"]]") - IN-01
+IntencjaKrokMinusTests.swift:64: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("["i1"]") is not equal to ("["i1", "i2"]") - IN-01
+IntencjaKrokMinusTests.swift:67: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("11") is not equal to ("12") - IN-01
+IntencjaKrokMinusTests.swift:68: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("Optional("i1")") is not equal to ("Optional("i2")") - IN-01
+IntencjaKrokMinusTests.swift:70: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("true") is not equal to ("false") - IN-08
+IntencjaKrokMinusTests.swift:70: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("true") is not equal to ("false") - IN-09
+IntencjaKrokMinusTests.swift:71: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertEqual failed: ("2026-11-28") is not equal to ("2026-11-27") - IN-09
+IntencjaKrokMinusTests.swift:56: error: IntencjaKrokMinusTests.testWektoryIntencji : XCTAssertThrowsError failed: did not throw error - IN-10
+Test Case 'IntencjaKrokMinusTests.testWektoryIntencji' failed (0.006 seconds)
+	 Executed 3 tests, with 14 failures (0 unexpected) in 0.015 (0.015) seconds
+```

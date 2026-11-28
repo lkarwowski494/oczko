@@ -63,6 +63,9 @@
     ],
     "modules/oczko-reguly/Sources/OczkoDziennik/Haptyka.swift": [
       "targets/watch/Wspolne/Haptyka.swift"
+    ],
+    "modules/oczko-reguly/Sources/OczkoReguly/Aktywnosc.swift": [
+      "modules/oczko-dziennik-plus/ios/Wspolne/Aktywnosc.swift"
     ]
   }
 }

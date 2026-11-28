@@ -89,12 +89,15 @@ public struct StanEkranuBlokady: Codable, Hashable { // Hashable: ContentState L
     if krok != 1 { try c.encode(krok, forKey: .krok) } // krok 1 = brak klucza (jak w złotych plikach sprzed 1.0.2; dekoder czyta oba)
   }
 
-  /// Stan po zapisanym stuknięciu (ADR-0008 (1)): wartość ± 1, `glowa` = nowe zdarzenie, dzień i dni limitu; `ostatniPlusMs` = czas zdarzenia
-  /// tylko po +1 (wejście przerwy nowego dnia = ostatnie +1, jak TS `ostatniPlus`; P-132 (2c), P-138).
+  /// Stan po zapisanym stuknięciu (ADR-0008 (1)): wartość ± k, `glowa` = ostatnie nowe zdarzenie, dzień i dni limitu; `ostatniPlusMs` = czas zdarzenia
+  /// tylko po +k (wejście przerwy nowego dnia = ostatnie +1, jak TS `ostatniPlus`; P-132 (2c), P-138). −1 jest korektą: nie zmienia `dzien`, `dzienDozwolony`
+  /// ani dni limitu (ADR-0035 § U4, IN-08, IN-09) — dawniej przywracał w stanie limitu przycisk „+1”.
   public func po(_ wartoscZmiana: Int, glowa: String, czasMs: Int64, dzien: String, dni: [DzienStanu]) -> StanEkranuBlokady {
-    StanEkranuBlokady(wersja: wersja, licznikId: licznikId, nazwa: nazwa, wartosc: max(0, wartosc + wartoscZmiana), znaczenie: znaczenie, glowa: glowa,
-                      ostatniPlusMs: wartoscZmiana > 0 ? czasMs : ostatniPlusMs, dzien: dzien, dzienDozwolony: true, sesjaStartMs: sesjaStartMs, pro: pro, proWaznoscDo: proWaznoscDo,
-                      dniWMiesiacu: dni, przypomnienia: przypomnienia, zablokowany: zablokowany, krok: krok)
+    let plus = wartoscZmiana > 0
+    return StanEkranuBlokady(wersja: wersja, licznikId: licznikId, nazwa: nazwa, wartosc: max(0, wartosc + wartoscZmiana), znaczenie: znaczenie, glowa: glowa,
+                             ostatniPlusMs: plus ? czasMs : ostatniPlusMs, dzien: plus ? dzien : self.dzien, dzienDozwolony: plus ? true : dzienDozwolony,
+                             sesjaStartMs: sesjaStartMs, pro: pro, proWaznoscDo: proWaznoscDo, dniWMiesiacu: plus ? dni : dniWMiesiacu,
+                             przypomnienia: przypomnienia, zablokowany: zablokowany, krok: krok)
   }
 
   public init(wersja: Int, licznikId: String, nazwa: String, wartosc: Int, znaczenie: Znaczenie, glowa: String?, ostatniPlusMs: Int64?, dzien: String,
