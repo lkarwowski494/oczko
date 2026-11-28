@@ -1,0 +1,7 @@
+ZK1 — npm run verify (2026-11-28, rola 03 fix; drzewo = 280d48a3 + docs/zakres-1-0-2-stan.md)
+Kroki: typecheck, typecheck:testy, lint, jakosc:kontrole, test — wszystkie zakończone.
+Test Suites: 749 passed, 749 total
+Tests:       8438 passed, 8438 total
+Kod wyjścia: 0
+Kontrole zakresu: zakres-oczko.mjs (warsztat 03-zakres/2026-10-22-build) kod 0 przed i po (0 błędów; 3 → 4 uwagi, nowa: F-09 do oceny 04);
+macierz U→ZM→F→„Gotowe” i PU: przed kod 1 (8 błędów), po kod 0, mutant kod 1.
